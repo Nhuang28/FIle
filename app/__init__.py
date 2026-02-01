@@ -19,7 +19,8 @@ def create_app(config_class=Config):
     login.init_app(app)
 
     # Register Blueprints
-    from app.routes import auth
+    from app.routes import auth, main
     app.register_blueprint(auth.bp)
+    app.register_blueprint(main.bp)
 
     return app
