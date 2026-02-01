@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Updated Student Progress Tracking - LearnLoop</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d7ff2",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            min-height: 100dvh;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+<div class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center p-4 justify-between max-w-md mx-auto">
+<div class="flex items-center gap-2">
+<button class="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-white">arrow_back_ios_new</span>
+</button>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">Student Progress</h2>
+<div class="flex items-center">
+<button class="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-white">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+<main class="max-w-md mx-auto pb-32">
+<div class="p-4 flex items-center gap-4">
+<div class="relative">
+<div class="h-20 w-20 rounded-full bg-cover bg-center border-2 border-primary" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBuWkeeGZ2OVuIN_LOlp21ZhCkpC2Ggm_2vwitBSlua1wikileoFvtqwUMLnved66KXqY-ATNbehU7nHWP9Ohrp0mPOXfcBmxhaSrScLjvKoRhx8hJXSrbhU_XvkHXnHF3y6hLenq84Xv5VyXm_JzGsuLMs7EHFZVjcIWkSpUlmDROVn0At_qvzbLh7aIsAXLZVsjKqtHrMhSCGiE8Llz6gJTWqCQoOKsAtgkBQHSnOuq5-HfMVYo3dCYRA-PM6-U2urSG1bke6kDI");'>
+</div>
+<div class="absolute bottom-0 right-0 h-5 w-5 bg-green-500 border-2 border-background-dark rounded-full"></div>
+</div>
+<div class="flex flex-col">
+<h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Alex Johnson</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Grade 10 Biology • Section B</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-primary text-xs">local_fire_department</span>
+<p class="text-primary text-xs font-bold uppercase tracking-wider">12 Day Streak</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 px-4 py-2">
+<div class="flex flex-col gap-2 rounded-xl p-4 bg-white dark:bg-[#1c2630] border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Last Study</p>
+<span class="material-symbols-outlined text-orange-500 text-sm">schedule</span>
+</div>
+<p class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">3 days ago</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-red-500 text-xs">arrow_downward</span>
+<p class="text-red-500 text-[10px] font-bold">-1 day vs avg</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-4 bg-white dark:bg-[#1c2630] border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Mastery</p>
+<span class="material-symbols-outlined text-primary text-sm">verified</span>
+</div>
+<p class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">842 cards</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-green-500 text-xs">trending_up</span>
+<p class="text-green-500 text-[10px] font-bold">+24 this week</p>
+</div>
+</div>
+</div>
+<div class="px-4 pt-6 pb-2">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-slate-900 dark:text-white text-lg font-bold tracking-tight">Monthly Accuracy</h2>
+<div class="flex p-1 bg-slate-100 dark:bg-slate-800 rounded-lg">
+<button class="px-3 py-1 text-xs font-bold rounded-md bg-white dark:bg-primary text-slate-900 dark:text-white shadow-sm transition-all">2025</button>
+<button class="px-3 py-1 text-xs font-bold rounded-md text-slate-500 dark:text-slate-400 transition-all">2026</button>
+</div>
+</div>
+<div class="bg-white dark:bg-[#1c2630] rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-visible">
+<div class="absolute left-4 top-14 bottom-12 flex flex-col justify-between text-[10px] font-bold text-slate-400 dark:text-slate-500 pointer-events-none">
+<span>100</span>
+<span>75</span>
+<span>50</span>
+<span>25</span>
+<span>0</span>
+</div>
+<div class="ml-8 mt-2 relative">
+<div class="h-48 w-full border-l border-b border-slate-100 dark:border-slate-800 relative">
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+<div class="w-full border-t border-slate-100 dark:border-slate-800/50"></div>
+<div class="w-full border-t border-slate-100 dark:border-slate-800/50"></div>
+<div class="w-full border-t border-slate-100 dark:border-slate-800/50"></div>
+<div class="w-full border-t border-slate-100 dark:border-slate-800/50"></div>
+<div></div>
+</div>
+<svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 1100 200">
+<defs>
+<linearGradient id="accuracyGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#0d7ff2" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#0d7ff2" stop-opacity="0"></stop>
+</linearGradient>
+</defs>
+<path d="M0 60 Q 100 70, 200 50 T 400 80 T 600 40 T 800 55 T 1000 35 L 1100 30 V 200 H 0 Z" fill="url(#accuracyGradient)"></path>
+<path d="M0 60 Q 100 70, 200 50 T 400 80 T 600 40 T 800 55 T 1000 35 L 1100 30" fill="none" stroke="#0d7ff2" stroke-linecap="round" stroke-width="4"></path>
+<circle cx="820" cy="52" fill="#0d7ff2" r="6" stroke="white" stroke-width="2"></circle>
+</svg>
+<div class="absolute left-[65%] top-[-10px] transform -translate-x-1/2 bg-slate-900 text-white p-3 rounded-lg shadow-xl border border-slate-700 z-10 w-32 pointer-events-none">
+<p class="text-[10px] text-slate-400 font-bold uppercase mb-1">October</p>
+<div class="space-y-1">
+<div class="flex justify-between text-xs">
+<span class="text-slate-400">Points</span>
+<span class="font-bold">1,240</span>
+</div>
+<div class="flex justify-between text-xs">
+<span class="text-slate-400">Attempts</span>
+<span class="font-bold">482</span>
+</div>
+<div class="flex justify-between text-xs pt-1 border-t border-slate-700">
+<span class="text-primary font-bold">Accuracy</span>
+<span class="text-primary font-bold">88%</span>
+</div>
+</div>
+<div class="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-slate-900 border-r border-b border-slate-700 rotate-45"></div>
+</div>
+</div>
+<div class="flex justify-between mt-3 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">
+<span>Jan</span>
+<span>Feb</span>
+<span>Mar</span>
+<span>Apr</span>
+<span>May</span>
+<span>Jun</span>
+<span>Jul</span>
+<span>Aug</span>
+<span>Sep</span>
+<span>Oct</span>
+<span>Nov</span>
+<span>Dec</span>
+</div>
+</div>
+</div>
+</div>
+<div class="px-4 py-6">
+<h3 class="text-slate-900 dark:text-white text-sm font-bold uppercase tracking-widest mb-3">Last Deck Studied</h3>
+<div class="bg-white dark:bg-[#1c2630] rounded-xl p-4 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">biotech</span>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white font-bold text-sm">Cellular Mitosis &amp; DNA</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">92% Mastery reached</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400">chevron_right</span>
+</div>
+</div>
+</main>
+<div class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-background-dark/90 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 px-6 py-4 z-50">
+<div class="max-w-md mx-auto flex gap-4">
+<button class="flex-1 bg-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/25 flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-xl">mail</span>
+            Message Alex
+        </button>
+<button class="w-14 h-14 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl flex items-center justify-center active:scale-95 transition-transform">
+<span class="material-symbols-outlined">assignment_add</span>
+</button>
+</div>
+<div class="w-32 h-1 bg-slate-300 dark:bg-slate-700 rounded-full mx-auto mt-6 opacity-30"></div>
+</div>
+
+</body></html>

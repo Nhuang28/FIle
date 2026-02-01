@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LearnLoop - Study Mode Selector</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen flex flex-col max-w-md mx-auto border-x border-slate-200 dark:border-slate-800 shadow-2xl">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
+<div class="flex items-center p-4 pb-2 justify-between">
+<div class="text-primary flex size-12 shrink-0 items-center justify-start cursor-pointer">
+<span class="material-symbols-outlined" style="font-size: 28px;">arrow_back_ios_new</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight flex-1 text-center">Study Settings</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex cursor-pointer items-center justify-center rounded-lg h-12 bg-transparent text-primary p-0">
+<span class="material-symbols-outlined" style="font-size: 24px;">info</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto pb-32">
+<!-- HeadlineText -->
+<section class="px-4 pt-6">
+<h3 class="text-slate-900 dark:text-white tracking-tight text-2xl font-bold leading-tight">Choose Study Mode</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Select how you want to learn today.</p>
+</section>
+<!-- Mode Cards -->
+<div class="px-4 py-6 flex flex-col gap-4">
+<!-- Selected Card (Due Mode) -->
+<div class="relative group cursor-pointer">
+<div class="flex items-stretch justify-between gap-4 rounded-xl bg-primary/10 border-2 border-primary p-5 shadow-lg transition-all">
+<div class="flex flex-[2_2_0px] flex-col gap-4">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">schedule</span>
+<p class="text-slate-900 dark:text-white text-lg font-bold leading-tight">Due Mode</p>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">Focus on cards scheduled for review now.</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Active</span>
+<span class="text-primary text-xs font-semibold">42 cards due</span>
+</div>
+</div>
+<div class="w-32 h-24 bg-center bg-no-repeat bg-cover rounded-lg flex-none border border-primary/20" data-alt="Abstract blue glowing clock illustration" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDnhkxwJa398wqtm-pqHij4UovUmzew8toEzQ1uwMuDkldMN4sHzj5fFnfTPJvoblbFM8lA3rL0JwF4LHpeGzwLBfstR9kNWx9KWGeIwniwkQ825zdleYkTiHyeXr6L0rqGmNN7bLAWHhAWvGN4DWlqxe2sS8m2jIShSjy_hV0duL-upMPkaEfcEKY-2DUhj9sDUAgbQSPCPNvAiUAY-wwI1eltUWZtCKxB1NMIbjJhPBH8srcC987WVpi_SBR9QnhijeGzb1VnVrM");'>
+</div>
+</div>
+</div>
+<!-- Revision Mode -->
+<div class="relative group cursor-pointer">
+<div class="flex items-stretch justify-between gap-4 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 p-5 hover:border-primary/50 transition-all">
+<div class="flex flex-col gap-1 flex-[2_2_0px]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">layers</span>
+<p class="text-slate-900 dark:text-white text-lg font-bold leading-tight">Revision Mode</p>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal">Browse the entire deck regardless of schedule.</p>
+<div class="mt-4">
+<p class="text-slate-400 text-xs font-medium">1,240 total cards</p>
+</div>
+</div>
+<div class="w-32 h-24 bg-center bg-no-repeat bg-cover rounded-lg flex-none opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Stack of organized digital flashcards illustration" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDSmfPjijS1AfhwvlusOAEZ_ig90G_srWU_Guo_fZ550Y7t92xUCEK6AonauYePBuBQdx6rEIExVRUr8Mlxg-eqLP_WKN9r665hv0QYbqthp_fiwpioi_kFg6GFIIuFm8U849VBt30mWNyTUZlRnOpNKq6FuPpsYhHXh-wQRY1PZjCfwoXVbM-1NwYxOkTfHAv6WRb9OdQ5R2MK9beWW6Uu0YEJBFfyQ6R-LPtPQhBAwEfKJxlv26OG0wh_-V_elfaisTjC2tVyZdg");'>
+</div>
+</div>
+</div>
+</div>
+<!-- SectionHeader -->
+<section class="mt-4">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight px-4 pb-2">Session Options</h3>
+<div class="px-4 space-y-2">
+<!-- Toggle Row 1 -->
+<div class="flex items-center justify-between p-4 bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">shuffle</span>
+<span class="text-sm font-medium">Shuffle Deck</span>
+</div>
+<div class="w-12 h-6 bg-primary rounded-full relative cursor-pointer">
+<div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div>
+</div>
+</div>
+<!-- Toggle Row 2 -->
+<div class="flex items-center justify-between p-4 bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">swap_horiz</span>
+<span class="text-sm font-medium">Include Reverse Cards</span>
+</div>
+<div class="w-12 h-6 bg-slate-300 dark:bg-slate-700 rounded-full relative cursor-pointer">
+<div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-sm"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Card Types Filter -->
+<section class="mt-8 px-4">
+<h3 class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest pb-3">Filter Card Types</h3>
+<div class="flex flex-wrap gap-2">
+<button class="px-4 py-2 rounded-full bg-primary text-white text-xs font-bold">New</button>
+<button class="px-4 py-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold">Learning</button>
+<button class="px-4 py-2 rounded-full bg-primary text-white text-xs font-bold">Review</button>
+<button class="px-4 py-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold">Suspended</button>
+</div>
+</section>
+</main>
+<!-- Fixed Bottom Action Button -->
+<div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto p-4 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800">
+<button class="w-full bg-primary hover:bg-blue-600 active:scale-95 transition-all text-white font-bold py-4 rounded-xl flex items-center justify-center gap-3 shadow-xl shadow-primary/20">
+<span class="material-symbols-outlined">play_circle</span>
+<span>Start Session (42 Cards)</span>
+</button>
+<div class="h-6"></div> <!-- Safe area for iOS gesture bar -->
+</div>
+</body></html>

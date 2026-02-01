@@ -1,0 +1,148 @@
+<html class="dark" lang="en"><head><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white flex flex-col">```html
+
+
+
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cloze Back - LearnLoop</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d7ff2",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Lexend', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            min-height: 100dvh;
+        }
+        .card-shadow {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+
+
+<header class="flex items-center justify-between p-4 bg-background-light dark:bg-background-dark sticky top-0 z-10">
+<div class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer">
+<span class="material-symbols-outlined text-slate-500 dark:text-slate-400">close</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Cell Biology</span>
+<h2 class="text-sm font-bold leading-tight">Cloze Deletion</h2>
+</div>
+<div class="flex items-center justify-end w-10 relative">
+<div class="absolute -left-14 flex items-center gap-1 bg-emerald-500/20 text-emerald-500 px-2 py-1 rounded-full text-[10px] font-bold border border-emerald-500/30 whitespace-nowrap">
+            +1 point
+        </div>
+<span class="material-symbols-outlined text-slate-400">more_vert</span>
+</div>
+</header>
+<div class="px-6 py-2">
+<div class="flex justify-between items-end mb-2">
+<p class="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Progress</p>
+<p class="text-xs font-bold text-primary">12/50</p>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[24%] rounded-full"></div>
+</div>
+</div>
+<main class="flex-1 flex flex-col items-center justify-center p-6 gap-6">
+<div class="w-full max-w-sm bg-white dark:bg-[#1b2127] rounded-xl card-shadow flex flex-col border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="w-full h-32 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCO0y3mIEvGGdCXCnf2ZcM8HosF6FMuegYtIr_-lk_dBNKCQSNTPooZsQy7YaTTDJcPZ9zm2JKfUAkQpGZEnv6qXCb-XK7sCl0_CVUyev_bM3v3OZFrKdXfO27HFg1Ym0Pz7TPgIh78yFwVQ49UxWwTA820ijh8YKI_QHN2xpX5orkLuPG-DGipGeIcm3k9b_1oT2GT1INk-OlWnNrX4WTBhhMK6tAHfXL7mZy0-M1tSQyxDwlEdURvKF3USwX0jSSRYuP75x4Az-o');"></div>
+<div class="p-8 flex flex-col items-center text-center">
+<p class="text-xl font-medium text-slate-700 dark:text-slate-200 leading-relaxed">
+                The mitochondria is the <span class="text-primary font-bold decoration-primary/30 decoration-2 underline-offset-4">powerhouse</span> of the cell.
+            </p>
+</div>
+<div class="px-6 pb-6">
+<div class="bg-slate-50 dark:bg-[#131920] p-4 rounded-lg border border-slate-200 dark:border-slate-800">
+<span class="text-slate-400 text-[10px] font-bold uppercase tracking-widest block mb-2">Explanation (Mark Scheme)</span>
+<ul class="space-y-2 text-left">
+<li class="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+<span class="text-primary mt-1 text-xs">•</span>
+<span>Commonly known as the "powerhouse" due to energy production.</span>
+</li>
+<li class="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+<span class="text-primary mt-1 text-xs">•</span>
+<span>Produces ATP via aerobic respiration.</span>
+</li>
+<li class="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+<span class="text-primary mt-1 text-xs">•</span>
+<span>Located in the cytoplasm of eukaryotic cells.</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="flex gap-4 items-center text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+<div class="flex items-center gap-1.5">
+<div class="w-2 h-2 rounded-full bg-red-500"></div>
+<span>8 New</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="w-2 h-2 rounded-full bg-amber-500"></div>
+<span>14 Review</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+<span>28 Mastered</span>
+</div>
+</div>
+</main>
+<footer class="p-4 pb-8 bg-white dark:bg-[#1b2127] border-t border-slate-200 dark:border-slate-800 rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+<div class="flex items-center justify-between mb-4 px-2">
+<h4 class="text-slate-400 text-[10px] font-bold leading-normal tracking-widest uppercase">Rate Difficulty</h4>
+<button class="text-[10px] font-bold uppercase text-primary bg-primary/10 px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">visibility_off</span>
+            Hide Answer
+        </button>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+<button class="flex flex-col items-center gap-1 p-3 rounded-xl bg-slate-100 dark:bg-[#283039] hover:bg-red-50 dark:hover:bg-red-900/40 border border-transparent hover:border-red-500/30 transition-all">
+<span class="text-lg font-bold text-red-500">0</span>
+<span class="text-[10px] font-bold uppercase text-red-500">Again</span>
+<span class="text-[9px] font-medium text-slate-400 lowercase italic tracking-tight text-center leading-none">(Repeat now)</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-3 rounded-xl bg-slate-100 dark:bg-[#283039] hover:bg-amber-50 dark:hover:bg-amber-900/40 border border-transparent hover:border-amber-500/30 transition-all">
+<span class="text-lg font-bold text-amber-500">1</span>
+<span class="text-[10px] font-bold uppercase text-amber-500">Hard</span>
+<span class="text-[9px] font-medium text-slate-400 lowercase italic tracking-tight text-center leading-none">(+1 day)</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-3 rounded-xl bg-slate-100 dark:bg-[#283039] hover:bg-blue-50 dark:hover:bg-blue-900/40 border border-transparent hover:border-primary/30 transition-all">
+<span class="text-lg font-bold text-primary">2</span>
+<span class="text-[10px] font-bold uppercase text-primary">Medium</span>
+<span class="text-[9px] font-medium text-slate-400 lowercase italic tracking-tight text-center leading-none">(+2 days)</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-3 rounded-xl bg-slate-100 dark:bg-[#283039] hover:bg-emerald-50 dark:hover:bg-emerald-900/40 border border-transparent hover:border-emerald-500/30 transition-all">
+<span class="text-lg font-bold text-emerald-500">3</span>
+<span class="text-[10px] font-bold uppercase text-emerald-500">Easy</span>
+<span class="text-[9px] font-medium text-slate-400 lowercase italic tracking-tight text-center leading-none">(+4 days)</span>
+</button>
+</div>
+</footer>
+
+</body></html>

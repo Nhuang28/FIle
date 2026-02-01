@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI MCQ Review &amp; Approval - LearnLoop</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen font-display">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="max-w-screen-xl mx-auto px-4 h-16 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="text-primary">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</div>
+<h1 class="text-lg font-bold tracking-tight">AI MCQ Review</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-4 py-2 text-primary font-bold text-sm">Approve All</button>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg font-bold text-sm transition-colors">
+                    Save to Deck
+                </button>
+</div>
+</div>
+</header>
+<main class="max-w-screen-xl mx-auto p-4 space-y-6">
+<!-- Stats & Progress Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Stats Component -->
+<div class="flex flex-1 flex-col gap-2 rounded-xl p-6 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Generated</p>
+<p class="text-2xl font-bold leading-tight">12 Questions</p>
+<p class="text-xs text-slate-400 mt-1">Ready for LearnLoop Deck "Cell Biology 101"</p>
+</div>
+<!-- Progress Component -->
+<div class="flex flex-col gap-3 p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Review Progress</p>
+<p class="text-xs text-slate-400">8 of 12 questions approved</p>
+</div>
+<p class="text-primary text-xl font-bold">65%</p>
+</div>
+<div class="h-2 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-500" style="width: 65%;"></div>
+</div>
+</div>
+</div>
+<!-- Accordions / MCQ List Section -->
+<div class="flex flex-col gap-4">
+<h2 class="text-sm font-bold uppercase tracking-widest text-slate-500 px-1">Generated Content</h2>
+<!-- Question 1 (Expanded) -->
+<div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
+<details class="group" open="">
+<summary class="flex cursor-pointer items-center justify-between gap-4 p-5 list-none">
+<div class="flex items-start gap-4">
+<span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-sm">1</span>
+<p class="font-medium text-base">What is the primary function of the mitochondria in eukaryotic cells?</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-5 pb-5 space-y-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<div class="p-3 rounded-lg border border-primary bg-primary/5 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+<p class="text-sm font-medium">A) Energy production (ATP)</p>
+</div>
+<div class="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-sm">radio_button_unchecked</span>
+<p class="text-sm">B) Protein synthesis</p>
+</div>
+<div class="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-sm">radio_button_unchecked</span>
+<p class="text-sm">C) Lipid storage</p>
+</div>
+<div class="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-sm">radio_button_unchecked</span>
+<p class="text-sm">D) Waste management</p>
+</div>
+</div>
+<div class="bg-slate-50 dark:bg-slate-800/30 p-4 rounded-lg">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-tighter mb-1">Explanation</p>
+<p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                                Mitochondria are known as the powerhouse of the cell because they generate most of the cell's supply of ATP through aerobic respiration.
+                            </p>
+</div>
+<!-- ActionsBar for Card -->
+<div class="flex flex-wrap gap-2 pt-2">
+<button class="flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary px-4 py-2 rounded-lg transition-colors group/btn">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+<span class="text-sm font-semibold">Approve</span>
+</button>
+<button class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+<span class="text-sm font-semibold">Edit</span>
+</button>
+<button class="flex items-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 px-4 py-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+<span class="text-sm font-semibold">Discard</span>
+</button>
+</div>
+</div>
+</details>
+</div>
+<!-- Question 2 (Collapsed) -->
+<div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
+<details class="group">
+<summary class="flex cursor-pointer items-center justify-between gap-4 p-5 list-none">
+<div class="flex items-start gap-4">
+<span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 font-bold text-sm">2</span>
+<p class="font-medium text-base">How does photosynthesis occur in plant cells?</p>
+</div>
+<div class="flex items-center gap-3">
+<span class="hidden sm:block px-2 py-1 bg-amber-500/10 text-amber-500 text-[10px] font-bold uppercase rounded">Pending Review</span>
+<span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
+</div>
+</summary>
+<div class="px-5 pb-5">
+<p class="text-slate-400 text-sm">Expand to review options and explanation.</p>
+</div>
+</details>
+</div>
+<!-- Question 3 (Collapsed) -->
+<div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden opacity-60">
+<details class="group">
+<summary class="flex cursor-pointer items-center justify-between gap-4 p-5 list-none">
+<div class="flex items-start gap-4">
+<span class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-green-500/20 text-green-500 font-bold text-sm">
+<span class="material-symbols-outlined text-sm">check</span>
+</span>
+<p class="font-medium text-base">Define the laws of thermodynamics</p>
+</div>
+<div class="flex items-center gap-3">
+<span class="px-2 py-1 bg-green-500/10 text-green-500 text-[10px] font-bold uppercase rounded">Approved</span>
+<span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
+</div>
+</summary>
+</details>
+</div>
+</div>
+<!-- Desktop Action Bar (Bottom Sticky for Mobile, Inline for Desktop) -->
+<div class="mt-8 p-6 rounded-2xl bg-gradient-to-r from-primary to-blue-700 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl shadow-primary/20">
+<div>
+<h3 class="text-xl font-bold">Ready to start studying?</h3>
+<p class="text-blue-100 text-sm opacity-90">All approved questions will be added to your spaced-repetition loop.</p>
+</div>
+<div class="flex gap-3 w-full md:w-auto">
+<button class="flex-1 md:flex-none bg-white text-primary hover:bg-blue-50 px-8 py-3 rounded-xl font-bold transition-all transform active:scale-95 shadow-lg">
+                    Finalize &amp; Save
+                </button>
+</div>
+</div>
+</main>
+<!-- Empty State Spacer -->
+<div class="h-20"></div>
+</body></html>
