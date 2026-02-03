@@ -3,55 +3,53 @@
 {% block title %}Log In - LearnLoop{% endblock %}
 
 {% block content %}
-<div
-    class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md flex items-center p-4 justify-between border-b border-slate-200 dark:border-slate-800">
+<div class="sticky top-0 z-10 bg-[#E8E9E8] flex items-center p-4 justify-between">
     <div
-        class="text-primary flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-primary/10 cursor-pointer transition-colors">
+        class="text-black flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-black/5 cursor-pointer transition-colors">
         <span class="material-symbols-outlined text-2xl">arrow_back_ios_new</span>
     </div>
-    <h2
-        class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-10">
+    <h2 class="text-black text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-10">
         Log In</h2>
 </div>
 
 <main class="flex-1 flex flex-col max-w-md mx-auto w-full pb-10">
     <div class="px-6 pt-12">
-        <h1 class="text-slate-900 dark:text-white tracking-tight text-[32px] font-bold leading-tight text-left">Welcome
-            back.</h1>
-        <p class="text-slate-600 dark:text-slate-400 text-base font-normal leading-normal pt-2">Continue your learning
-            journey with LearnLoop.</p>
+        <h1 class="text-black tracking-tight text-[32px] font-bold leading-tight text-left">Welcome back.</h1>
+        <p class="text-gray-600 text-base font-normal leading-normal pt-2">Continue your learning journey with
+            LearnLoop.</p>
     </div>
 
-    <form class="px-6 mt-12 space-y-6" method="POST" action="{{ url_for('auth.login') }}">
+    <form class="mx-6 mt-8 space-y-6 bg-black p-8 rounded-3xl shadow-xl" method="POST"
+        action="{{ url_for('auth.login') }}">
         <div class="space-y-1.5">
-            <label class="text-sm font-medium text-slate-700 dark:text-slate-300 ml-1">Email Address</label>
+            <label class="text-sm font-medium text-white ml-1">Email Address</label>
             <div class="relative">
                 <span
-                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">mail</span>
+                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">mail</span>
                 <input name="email" required
-                    class="w-full bg-slate-100 dark:bg-slate-800/50 border-slate-200 dark:border-slate-800 rounded-xl py-4 pl-12 pr-4 text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                    class="w-full bg-gray-900 border-gray-800 rounded-xl py-4 pl-12 pr-4 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-white focus:border-transparent outline-none transition-all"
                     placeholder="name@email.com" type="email" />
             </div>
         </div>
         <div class="space-y-1.5">
             <div class="flex items-center justify-between ml-1">
-                <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Password</label>
-                <a class="text-xs font-semibold text-primary hover:underline" href="#">Forgot Password?</a>
+                <label class="text-sm font-medium text-white">Password</label>
+                <a class="text-xs font-semibold text-gray-400 hover:text-white hover:underline" href="#">Forgot
+                    Password?</a>
             </div>
             <div class="relative">
                 <span
-                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">lock</span>
+                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">lock</span>
                 <input name="password" required
-                    class="w-full bg-slate-100 dark:bg-slate-800/50 border-slate-200 dark:border-slate-800 rounded-xl py-4 pl-12 pr-12 text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                    class="w-full bg-gray-900 border-gray-800 rounded-xl py-4 pl-12 pr-12 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-white focus:border-transparent outline-none transition-all"
                     placeholder="••••••••" type="password" />
-                <button class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-primary"
-                    type="button">
+                <button class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white" type="button">
                     <span class="material-symbols-outlined text-xl">visibility</span>
                 </button>
             </div>
         </div>
         <button
-            class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all mt-4 flex items-center justify-center gap-2"
+            class="w-full bg-white hover:bg-gray-100 text-black font-bold py-4 rounded-xl shadow-lg transition-all mt-4 flex items-center justify-center gap-2"
             type="submit">
             Log In
             <span class="material-symbols-outlined text-lg">login</span>
@@ -59,26 +57,19 @@
 
         <div class="relative py-2">
             <div class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-slate-200 dark:border-slate-700"></div>
+                <div class="w-full border-t border-gray-800"></div>
             </div>
             <div class="relative flex justify-center text-sm">
-                <span class="bg-background-light dark:bg-background-dark px-2 text-slate-500">Or</span>
+                <span class="bg-black px-2 text-gray-500">Or</span>
             </div>
         </div>
 
         <a href="{{ url_for('auth.register') }}"
-            class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-bold py-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2">
+            class="w-full bg-gray-900 border border-gray-800 text-white font-bold py-4 rounded-xl hover:bg-gray-800 transition-all flex items-center justify-center gap-2">
             Sign Up
         </a>
     </form>
-
-    <div class="mt-auto pt-12 px-6 text-center">
-        <p class="text-slate-500 dark:text-slate-400 text-sm">
-            Don't have an account?
-            <a class="text-primary font-bold hover:underline" href="{{ url_for('auth.register') }}">Sign Up</a>
-        </p>
-    </div>
 </main>
-<div class="fixed top-0 right-0 -z-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
-<div class="fixed bottom-0 left-0 -z-10 w-80 h-80 bg-primary/10 rounded-full blur-3xl"></div>
+<div class="fixed top-0 right-0 -z-10 w-64 h-64 bg-gray-900/5 rounded-full blur-3xl"></div>
+<div class="fixed bottom-0 left-0 -z-10 w-80 h-80 bg-gray-900/5 rounded-full blur-3xl"></div>
 {% endblock %}

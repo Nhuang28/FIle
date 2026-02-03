@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}My Stats - LearnLoop{% endblock %}
+
+{% block styles %}
+<style>
+    body {
+        background-color: #E8E9E8 !important;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="sticky top-0 z-50 bg-[#E8E9E8] border-b border-black/5">
+    <div class="flex items-center p-4 pb-2 justify-between max-w-md mx-auto">
+        <h2 class="text-2xl font-bold leading-tight tracking-tight flex-1 text-black">My Stats</h2>
+    </div>
+</div>
+
+<main class="max-w-md mx-auto pb-24 bg-[#E8E9E8] min-h-screen px-4 py-4">
+    <!-- Year Selector (Fixed to 2026 as requested) -->
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-bold text-black">Year 2026</h3>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 gap-3 mb-6">
+        <!-- Points -->
+        <div class="bg-black rounded-xl p-4 flex items-center justify-between shadow-sm">
+            <div>
+                <p class="text-gray-400 text-sm font-medium">Points</p>
+                <p class="text-white text-2xl font-bold mt-1">{{ total_points }}</p>
+            </div>
+            <!-- Icon removed -->
+        </div>
+
+        <!-- Attempted questions -->
+        <div class="bg-black rounded-xl p-4 flex items-center justify-between shadow-sm">
+            <div>
+                <p class="text-gray-400 text-sm font-medium">Attempted questions</p>
+                <p class="text-white text-2xl font-bold mt-1">{{ attempted_questions }}</p>
+            </div>
+            <!-- Icon removed -->
+        </div>
+
+        <!-- Accuracy -->
+        <div class="bg-black rounded-xl p-4 flex items-center justify-between shadow-sm">
+            <div>
+                <p class="text-gray-400 text-sm font-medium">Accuracy</p>
+                <p class="text-white text-2xl font-bold mt-1">{{ accuracy }}%</p>
+            </div>
+            <!-- Icon removed -->
+        </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="bg-black rounded-xl p-4 mb-6 shadow-sm">
+        <h4 class="text-white font-bold mb-4">Accuracy Trend</h4>
+        <div class="relative h-64 w-full">
+            <canvas id="accuracyChart"></canvas>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<nav class="fixed bottom-0 left-0 right-0 bg-[#E8E9E8] border-t border-black/5 px-6 pb-6 pt-2 z-50">
+    <div class="max-w-md mx-auto flex justify-between items-center px-4">
+        <a class="flex flex-col items-center gap-1 text-gray-500 hover:text-black" href="{{ url_for('main.index') }}">
+            <span class="material-symbols-outlined">home</span>
+            <span class="text-[10px] font-medium">Home</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-gray-500 hover:text-black" href="#">
+            <span class="material-symbols-outlined">layers</span>
+            <span class="text-[10px] font-medium">Decks</span>
+        </a>
+        <div class="flex flex-col items-center gap-1 text-black active-tab">
+            <span class="material-symbols-outlined fill-1">leaderboard</span>
+            <span class="text-[10px] font-bold">Stats</span>
+        </div>
+        <a class="flex flex-col items-center gap-1 text-gray-500 hover:text-black" href="{{ url_for('auth.logout') }}">
+            <span class="material-symbols-outlined">logout</span>
+            <span class="text-[10px] font-medium">Log out</span>
+        </a>
+    </div>
+</nav>
+
+<script>
+    // Mock monthly data passed from backend
+    const monthlyData = {{ monthly_accuracy | tojson }};
+
+    const ctx = document.getElementById('accuracyChart').getContext('2d');
+    const accuracyChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: 'Accuracy %',
+                data: monthlyData,
+                borderColor: '#39E079',
+                backgroundColor: 'rgba(57, 224, 121, 0.1)',
+                borderWidth: 3,
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#18181b', // matching bg
+                pointBorderColor: '#39E079',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: '#333',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    displayColors: false,
+                    padding: 10,
+                    callbacks: {
+                        label: function (context) {
+                            return context.parsed.y + '% Accuracy';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#9CA3AF',
+                        font: {
+                            family: "'Lexend', sans-serif"
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: '#9CA3AF',
+                        font: {
+                            family: "'Lexend', sans-serif",
+                            size: 10
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

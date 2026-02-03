@@ -44,7 +44,42 @@ def dashboard():
         'study_minutes': 32
     }
     
+    # Get enrolled classes
+    enrolled_classes = current_user.enrolled_classes # List of ClassMember objects
+    
     return render_template('dashboard/student.html', 
                            decks=decks, 
                            cards_due_count=cards_due_count,
-                           stats=stats)
+                           stats=stats,
+                           enrolled_classes=enrolled_classes)
+
+@bp.route('/stats')
+@login_required
+def stats():
+    # Mock Data Logic as requested
+    # Formula concept: (Correct MCQ + Correct Fill-in-gap) / (Total attempted excluding Flashcards)
+    
+    # Mock Monthly Accuracies for 2026 (12 months)
+    # Trends showing improvement over the year
+    monthly_accuracy = [65, 68, 72, 70, 75, 78, 82, 80, 85, 88, 90, 92]
+    
+    # Mock Aggregates (Year to Date)
+    # Logic: 1 Correct Answer (MCQ/Gap) = 1 Point
+    # Therefore, Points must be <= Attempted Questions
+    attempted_questions = 320 # MCQ + Fill-in-gap attempts
+    
+    # Calculate average accuracy from the monthly data for consistency
+    if monthly_accuracy:
+        accuracy = int(sum(monthly_accuracy) / len(monthly_accuracy))
+    else:
+        accuracy = 0
+        
+    # Calculate points based on accuracy (approximately) to satisfy Points <= Attempts
+    # Points = Attempts * Accuracy%
+    total_points = int(attempted_questions * (accuracy / 100))
+    
+    return render_template('stats.html',
+                           total_points=total_points,
+                           attempted_questions=attempted_questions,
+                           accuracy=accuracy,
+                           monthly_accuracy=monthly_accuracy)

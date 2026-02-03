@@ -3,58 +3,40 @@
 {% block title %}Teacher Dashboard - LearnLoop{% endblock %}
 
 {% block content %}
-<div
-    class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<style>
+    body {
+        background-color: #E8E9E8 !important;
+    }
+</style>
+<div class="sticky top-0 z-50 bg-[#E8E9E8] border-b border-slate-200 dark:border-slate-800">
     <div class="flex items-center p-4 pb-4 justify-between max-w-md mx-auto">
-        <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
-            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8"
-                data-alt="Portrait of a smiling teacher profile"
-                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCTamov-ofFPbe5xuv8PggIQlv2Shw5bXv_6KRPcM_YYaq_wQZ-ZZvyrJTNiYRjQZxECPwG7Vcfr8gy_sCXjBU_qumMVBUCqobDgTIFWk8-ygrAo2fPW7a07UgQapOunooXX8Z4YbqdfGLu-PDeJAQKkdG3w859mynuJa5rRohjOYH9bIjutwE-hKcdD81xR3b_7-Rhk8zmByhQwRwvMd7TQYzC001UCsHXpVesfdN5JiCbyjRleEXghR_7I0Ajt9uJKTgq-EJpAUI");'>
-            </div>
-        </div>
-        <h2 class="text-xl font-bold leading-tight tracking-tight flex-1 ml-3">My Classes</h2>
-        <div class="flex gap-2">
-            <button
-                class="flex size-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
-                <span class="material-symbols-outlined">notifications</span>
-            </button>
-            <button
-                class="flex size-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
-                <span class="material-symbols-outlined">settings</span>
-            </button>
-        </div>
+        <h2 class="text-xl font-bold leading-tight tracking-tight flex-1">{{ current_user.username }}</h2>
     </div>
 </div>
 <main class="max-w-md mx-auto pb-32">
     <div class="flex flex-wrap gap-3 p-4">
-        <div
-            class="flex min-w-[140px] flex-1 flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-800 shadow-sm border border-slate-100 dark:border-slate-700">
-            <div class="flex items-center gap-2 text-primary">
+        <div class="flex min-w-[140px] flex-1 flex-col gap-1 rounded-xl p-4 bg-black shadow-sm border border-black">
+            <div class="flex items-center gap-2 text-white">
                 <span class="material-symbols-outlined text-sm">group</span>
-                <p class="text-xs font-semibold uppercase tracking-wider opacity-80">Total Students</p>
+                <p class="text-xs font-semibold uppercase tracking-wider opacity-80 text-gray-400">Total Students</p>
             </div>
-            <p class="text-2xl font-bold leading-tight mt-1">{{ total_students }}</p>
+            <p class="text-2xl font-bold leading-tight mt-1 text-white">{{ total_students }}</p>
         </div>
-        <div
-            class="flex min-w-[140px] flex-1 flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-800 shadow-sm border border-slate-100 dark:border-slate-700">
-            <div class="flex items-center gap-2 text-emerald-500">
+        <div class="flex min-w-[140px] flex-1 flex-col gap-1 rounded-xl p-4 bg-black shadow-sm border border-black">
+            <div class="flex items-center gap-2 text-emerald-400">
                 <span class="material-symbols-outlined text-sm">trending_up</span>
-                <p class="text-xs font-semibold uppercase tracking-wider opacity-80">Avg. Mastery</p>
+                <p class="text-xs font-semibold uppercase tracking-wider opacity-80 text-gray-400">Avg. Mastery</p>
             </div>
-            <p class="text-2xl font-bold leading-tight mt-1">{{ avg_mastery }}%</p>
+            <p class="text-2xl font-bold leading-tight mt-1 text-white">{{ avg_mastery }}%</p>
         </div>
     </div>
-    <div class="px-4 py-2">
-        <label class="flex flex-col w-full">
-            <div
-                class="flex w-full items-stretch rounded-xl h-12 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 overflow-hidden">
-                <div class="text-slate-400 flex items-center justify-center pl-4">
-                    <span class="material-symbols-outlined">search</span>
-                </div>
-                <input class="w-full bg-transparent border-none focus:ring-0 px-3 text-base placeholder:text-slate-400"
-                    placeholder="Search your classes..." type="text" />
-            </div>
-        </label>
+
+    <div class="px-4 mt-6 mb-2">
+        <a href="{{ url_for('classes.create') }}"
+            class="flex w-full items-center justify-center gap-2 rounded-xl h-12 bg-primary text-white text-base font-bold shadow-lg shadow-primary/25 hover:bg-blue-600 transition-all active:scale-[0.98]">
+            <span class="material-symbols-outlined">add_circle</span>
+            <span>Create New Class</span>
+        </a>
     </div>
     <div class="flex items-center justify-between px-4 mt-6">
         <h3 class="text-lg font-bold">Active Classes</h3>
@@ -64,7 +46,7 @@
     <div class="mt-2 space-y-1">
         {% for class in classes %}
         <div
-            class="flex items-center gap-4 bg-white dark:bg-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800 px-4 min-h-[80px] py-3 cursor-pointer transition-colors mx-4 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-slate-700 mb-3">
+            class="flex items-center gap-4 bg-black text-white hover:bg-gray-900 px-4 min-h-[80px] py-3 cursor-pointer transition-colors mx-4 rounded-xl border border-transparent mb-3">
             <div class="flex items-center gap-4 flex-1">
                 <!-- Rotate colors based on index/id -->
                 {% set colors = ['bg-primary', 'bg-purple-500', 'bg-orange-500', 'bg-indigo-500', 'bg-pink-500',
@@ -78,7 +60,7 @@
                 </div>
                 <div class="flex flex-col justify-center">
                     <p class="font-bold leading-tight">{{ class.name }}</p>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm font-normal mt-0.5">
+                    <p class="text-gray-300 text-sm font-normal mt-0.5">
                         {{ class.members.count() }} Students • Invite: {{ class.invite_code }}
                     </p>
                 </div>
@@ -99,52 +81,35 @@
         </div>
         {% endfor %}
     </div>
-    <div
-        class="mx-4 mt-4 p-5 rounded-2xl bg-gradient-to-br from-primary to-blue-600 text-white relative overflow-hidden">
-        <div class="relative z-10">
-            <h4 class="text-lg font-bold">New Teacher Tools</h4>
-            <p class="text-sm opacity-90 mt-1 max-w-[200px]">Generate automated spaced-repetition loops from any
-                syllabus
-                PDF.</p>
-            <button class="mt-4 px-4 py-2 bg-white text-primary text-sm font-bold rounded-lg shadow-sm">
-                Try Magic Loop
-            </button>
-        </div>
-        <span
-            class="material-symbols-outlined absolute -right-4 -bottom-4 text-white/20 text-[120px] select-none pointer-events-none">
-            auto_awesome
-        </span>
-    </div>
+
 </main>
-<div class="fixed bottom-28 right-6 z-50">
-    <button
-        class="flex items-center justify-center size-14 bg-primary text-white rounded-full shadow-2xl shadow-primary/40 active:scale-95 transition-transform">
-        <span class="material-symbols-outlined text-3xl">add</span>
-    </button>
-</div>
-<nav
-    class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 pb-8 pt-3 px-6 z-50">
+
+<nav class="fixed bottom-0 left-0 right-0 bg-[#E8E9E8] border-t border-black/5 pb-8 pt-3 px-6 z-50">
     <div class="max-w-md mx-auto flex justify-between items-center">
-        <div class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500">
+        <div class="flex flex-col items-center gap-1 text-gray-500 hover:text-black">
             <span class="material-symbols-outlined">home</span>
             <span class="text-[10px] font-medium">Home</span>
         </div>
-        <div class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500">
+        <div class="flex flex-col items-center gap-1 text-gray-500 hover:text-black">
             <span class="material-symbols-outlined">layers</span>
             <span class="text-[10px] font-medium">Decks</span>
         </div>
-        <div class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500">
+        <div class="flex flex-col items-center gap-1 text-gray-500 hover:text-black">
             <span class="material-symbols-outlined">school</span>
             <span class="text-[10px] font-medium">Study</span>
         </div>
-        <div class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500">
+        <a class="flex flex-col items-center gap-1 text-gray-500 hover:text-black" href="{{ url_for('main.stats') }}">
             <span class="material-symbols-outlined">leaderboard</span>
             <span class="text-[10px] font-medium">Stats</span>
-        </div>
-        <div class="flex flex-col items-center gap-1 text-primary active-tab">
+        </a>
+        <div class="flex flex-col items-center gap-1 text-black active-tab">
             <span class="material-symbols-outlined">group</span>
             <span class="text-[10px] font-bold">Classes</span>
         </div>
+        <a class="flex flex-col items-center gap-1 text-gray-500 hover:text-black" href="{{ url_for('auth.logout') }}">
+            <span class="material-symbols-outlined">logout</span>
+            <span class="text-[10px] font-medium">Log out</span>
+        </a>
     </div>
 </nav>
 {% endblock %}
