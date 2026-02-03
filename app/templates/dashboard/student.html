@@ -33,11 +33,13 @@
                 </div>
             </div>
             <div class="p-5">
-                <button
-                    class="w-full flex items-center justify-center gap-2 rounded-lg h-12 bg-white text-black text-base font-bold transition-transform active:scale-95 shadow-md">
-                    <span class="material-symbols-outlined">play_circle</span>
-                    <span>Start Studying</span>
-                </button>
+                <div class="p-5">
+                    <button
+                        class="w-full flex items-center justify-center gap-2 rounded-xl h-12 bg-white text-black text-base font-bold transition-transform active:scale-95 shadow-md">
+                        <span class="material-symbols-outlined">play_circle</span>
+                        <span>Start Studying</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -46,19 +48,19 @@
     <div class="px-4 py-4">
         <h3 class="text-lg font-bold leading-tight mb-3 text-black">Quick Actions</h3>
         <div class="grid grid-cols-2 gap-3">
-            <button
-                class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-black border border-black transition-transform active:scale-95">
-                <div class="size-10 rounded-full bg-gray-800 flex items-center justify-center">
-                    <span class="material-symbols-outlined text-white">add_box</span>
+            <a href="{{ url_for('decks.create') }}"
+                class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-white dark:bg-[#1b2127] border border-gray-100 dark:border-gray-800 transition-colors active:bg-gray-50 dark:active:bg-gray-800">
+                <div class="size-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-emerald-500">add_box</span>
                 </div>
-                <span class="text-sm font-semibold text-white">Create Deck</span>
-            </button>
+                <span class="text-sm font-semibold">Create Deck</span>
+            </a>
             <a href="{{ url_for('classes.join') }}"
-                class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-black border border-black transition-transform active:scale-95">
-                <div class="size-10 rounded-full bg-gray-800 flex items-center justify-center">
-                    <span class="material-symbols-outlined text-white">group_add</span>
+                class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-white dark:bg-[#1b2127] border border-gray-100 dark:border-gray-800 transition-colors active:bg-gray-50 dark:active:bg-gray-800">
+                <div class="size-10 rounded-full bg-blue-500/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-blue-500">group_add</span>
                 </div>
-                <span class="text-sm font-semibold text-white">Join Class</span>
+                <span class="text-sm font-semibold">Join Class</span>
             </a>
         </div>
     </div>
@@ -71,7 +73,7 @@
         </div>
         <div class="space-y-3">
             {% for member in enrolled_classes %}
-            <a href="{{ url_for('classes.view', class_id=member.enrolled_class.id) }}"
+            <a href="{{ url_for('classes.view', class_id=member.class_id) }}"
                 class="flex items-center p-3 rounded-xl bg-black border border-black hover:bg-gray-900 transition-colors">
                 <div class="size-12 rounded-lg bg-gray-800 flex items-center justify-center text-white">
                     <span class="material-symbols-outlined">school</span>
@@ -85,7 +87,7 @@
             {% else %}
             <div class="flex flex-col items-center justify-center p-6 bg-black rounded-xl border border-black">
                 <p class="text-sm text-gray-400 text-center">You haven't joined any classes yet.</p>
-                <a href="{{ url_for('classes.join') }}" class="mt-2 text-white text-sm font-bold">Join a Class</a>
+                <a href="#" class="mt-2 text-white text-sm font-bold">Join a Class</a>
             </div>
             {% endfor %}
         </div>
@@ -95,7 +97,8 @@
     <div class="px-4 py-4">
         <div class="flex items-center justify-between mb-3">
             <h3 class="text-lg font-bold leading-tight text-black">My Decks</h3>
-            <button class="text-sm font-semibold text-gray-500 hover:text-black">View All</button>
+            <a href="{{ url_for('decks.list') }}" class="text-sm font-semibold text-gray-500 hover:text-black">View
+                All</a>
         </div>
         <div class="space-y-3">
             {% for deck in decks %}
@@ -123,7 +126,7 @@
             <span class="material-symbols-outlined fill-1">home</span>
             <span class="text-[10px] font-bold">Home</span>
         </a>
-        <a class="flex flex-col items-center gap-1 text-gray-500 hover:text-black" href="#">
+        <a class="flex flex-col items-center gap-1 text-gray-500 hover:text-black" href="{{ url_for('decks.list') }}">
             <span class="material-symbols-outlined">layers</span>
             <span class="text-[10px] font-medium">Decks</span>
         </a>

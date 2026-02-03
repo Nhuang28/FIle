@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}My Decks - LearnLoop{% endblock %}
+
+{% block styles %}
+<style>
+    body {
+        background-color: #E8E9E8 !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="sticky top-0 z-50 bg-[#E8E9E8]">
+    <div class="flex items-center p-4 pb-2 justify-between max-w-md mx-auto">
+        <a href="{{ url_for('main.dashboard') }}"
+            class="text-black flex size-12 shrink-0 items-center justify-start cursor-pointer">
+            <span class="material-symbols-outlined">arrow_back</span>
+        </a>
+        <h2 class="text-2xl font-bold leading-tight tracking-tight flex-1 text-center text-black">My Decks</h2>
+        <div class="w-12"></div> <!-- Spacer for centering -->
+    </div>
+</div>
+
+<main class="max-w-md mx-auto pb-24 bg-[#E8E9E8] min-h-screen px-4">
+
+    <!-- Private Decks -->
+    <div class="mt-4">
+        <h3 class="text-lg font-bold leading-tight mb-3 text-black">Private Decks</h3>
+        <div class="space-y-3">
+            {% for deck in private_decks %}
+            <div
+                class="flex items-center p-3 rounded-xl bg-black border border-black hover:bg-gray-900 transition-colors">
+                <div class="size-12 rounded-lg bg-gray-800 flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined">lock</span>
+                </div>
+                <div class="ml-3 flex-1">
+                    <p class="text-sm font-bold text-white">{{ deck.title }}</p>
+                    <p class="text-xs text-gray-400">{{ deck.cards.count() }} cards</p>
+                </div>
+                <span class="material-symbols-outlined text-gray-600">chevron_right</span>
+            </div>
+            {% else %}
+            <div
+                class="flex flex-col items-center justify-center p-6 bg-black/5 rounded-xl border border-black/5 border-dashed">
+                <p class="text-sm text-gray-500 text-center">No private decks.</p>
+                <a href="{{ url_for('decks.create') }}" class="mt-2 text-primary text-sm font-bold">Create one</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Class Decks -->
+    <div class="mt-8">
+        <h3 class="text-lg font-bold leading-tight mb-3 text-black">Class Decks</h3>
+        <div class="space-y-3">
+            {% for deck in class_decks %}
+            <div
+                class="flex items-center p-3 rounded-xl bg-white dark:bg-[#1b2127] border border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                <div class="size-12 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500">
+                    <span class="material-symbols-outlined">school</span>
+                </div>
+                <div class="ml-3 flex-1">
+                    <p class="text-sm font-bold text-black dark:text-white">{{ deck.title }}</p>
+                    <p class="text-xs text-gray-500">
+                        {{ deck.cards.count() }} cards •
+                        {% if deck.class_id %}
+                        Class Deck
+                        {% else %}
+                        Shared
+                        {% endif %}
+                    </p>
+                </div>
+                <span class="material-symbols-outlined text-gray-400">chevron_right</span>
+            </div>
+            {% else %}
+            <div
+                class="flex flex-col items-center justify-center p-6 bg-black/5 rounded-xl border border-black/5 border-dashed">
+                <p class="text-sm text-gray-500 text-center">No class decks found.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</main>
+{% endblock %}

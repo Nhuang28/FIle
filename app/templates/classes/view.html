@@ -1,112 +1,119 @@
 {% extends "base.html" %}
 
-{% block title %}{{ class_.name }} - LearnLoop{% endblock %}
+{% block title %}{{ class_obj.name }} - LearnLoop{% endblock %}
 
 {% block content %}
-<div class="relative flex h-auto min-h-screen w-full flex-col max-w-md mx-auto bg-[#E8E9E8] overflow-x-hidden">
-    <!-- Top Bar -->
-    <div class="flex items-center bg-[#E8E9E8] p-4 pb-2 justify-between sticky top-0 z-10 border-b border-black/5">
+<div
+    class="relative flex h-auto min-h-screen w-full flex-col max-w-md mx-auto bg-background-light dark:bg-background-dark overflow-x-hidden">
+    <!-- Header -->
+    <div
+        class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between sticky top-0 z-10 border-b border-gray-100 dark:border-gray-800">
         <a href="{{ url_for('main.dashboard') }}"
-            class="text-black flex size-12 shrink-0 items-center justify-center cursor-pointer rounded-full hover:bg-black/5 transition-colors">
-            <span class="material-symbols-outlined">arrow_back_ios_new</span>
+            class="text-primary flex size-12 shrink-0 items-center cursor-pointer">
+            <span class="material-symbols-outlined">arrow_back_ios</span>
         </a>
-        <h2 class="text-black text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center truncate px-2">
-            {{ class_.name }}</h2>
+        <h2
+            class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">
+            {{ class_obj.name }}</h2>
         <div class="flex w-12 items-center justify-end">
-            <button
-                class="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-transparent text-black gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0 hover:bg-black/5 transition-colors">
+            <!-- Settings button placeholder -->
+            <button class="text-primary">
                 <span class="material-symbols-outlined">settings</span>
             </button>
         </div>
     </div>
 
-    <!-- Class Info -->
-    <div class="flex flex-col gap-2">
-        <h3 class="text-black tracking-light text-2xl font-bold leading-tight px-4 text-left pt-6">
-            Class Invite Code</h3>
-        <div class="px-4">
-            <div class="flex items-stretch justify-between gap-4 rounded-xl bg-black p-4 shadow-sm border border-black">
-                <div class="flex flex-[2_2_0px] flex-col gap-4">
-                    <div class="flex flex-col gap-1">
-                        <p class="text-white text-2xl font-black leading-tight tracking-widest">{{ class_.invite_code
-                            }}</p>
-                        <p class="text-gray-400 text-sm font-normal leading-normal">Share with
-                            students.</p>
-                    </div>
-                    <button onclick="navigator.clipboard.writeText('{{ class_.invite_code }}')"
-                        class="flex min-w-[120px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-white text-black gap-2 text-sm font-bold leading-normal w-fit shadow-md hover:bg-gray-100 transition-colors active:scale-95">
-                        <span class="material-symbols-outlined text-[18px]">content_copy</span>
-                        <span class="truncate">Copy Code</span>
-                    </button>
-                </div>
-                <!-- Optional: Keep the visual but style it grayscale or remove. Removing to simplify. -->
-            </div>
-        </div>
-
-        <!-- Stats -->
-        <div class="flex flex-wrap gap-4 p-4">
-            <div class="flex min-w-[140px] flex-1 flex-col gap-2 rounded-xl p-6 bg-black border border-black shadow-sm">
-                <p class="text-gray-400 text-sm font-medium leading-normal">Total Students</p>
-                <div class="flex items-baseline gap-2">
-                    <p class="text-white tracking-light text-3xl font-bold leading-tight">{{
-                        students|length }}</p>
-                    <span class="text-green-400 text-xs font-bold flex items-center">
-                        <span class="material-symbols-outlined text-xs">arrow_upward</span>
-                        Active
-                    </span>
+    <!-- Class Details -->
+    <div class="flex flex-col gap-2 p-4">
+        <h3 class="text-gray-900 dark:text-white tracking-light text-2xl font-bold leading-tight text-left">Class Invite
+            Code</h3>
+        <div
+            class="flex items-stretch justify-between gap-4 rounded-xl bg-white dark:bg-[#1b2127] p-4 shadow-sm border border-gray-100 dark:border-gray-800">
+            <div class="flex flex-[2_2_0px] flex-col gap-4">
+                <div class="flex flex-col gap-1">
+                    <p class="text-primary text-2xl font-black leading-tight tracking-widest">{{ class_obj.invite_code
+                        }}</p>
+                    <p class="text-gray-500 dark:text-[#9cabba] text-sm font-normal leading-normal">Share this code with
+                        your students.</p>
                 </div>
             </div>
-            <!-- Placeholder for future functionality -->
-            <div class="flex min-w-[140px] flex-1 flex-col gap-2 rounded-xl p-6 bg-black border border-black shadow-sm">
-                <p class="text-gray-400 text-sm font-medium leading-normal">Decks Shared</p>
-                <div class="flex items-baseline gap-2">
-                    <p class="text-white tracking-light text-3xl font-bold leading-tight">3</p>
-                    <span class="text-white text-xs font-bold">New</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Roster -->
-        <div class="flex items-center justify-between px-4 pt-4">
-            <h2 class="text-black text-[22px] font-bold leading-tight tracking-[-0.015em]">Student
-                Roster</h2>
-            <button class="text-black text-sm font-bold flex items-center gap-1 hover:underline">
-                <span class="material-symbols-outlined text-sm">filter_list</span>
-                Filter
-            </button>
-        </div>
-
-        <div class="px-4 pb-24 space-y-3">
-            {% if students %}
-            {% for member in students %}
             <div
-                class="bg-black p-4 flex items-center justify-between cursor-pointer rounded-xl border border-black hover:bg-gray-900 transition-colors">
-                <div class="flex items-center gap-3">
-                    <div
-                        class="size-10 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold text-sm">
-                        {{ member.student.username[:2] | upper }}
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="text-white font-bold text-sm">{{ member.student.username
-                            }}</span>
-                        <span class="text-gray-400 text-xs">Joined {{
-                            member.joined_at.strftime('%b %d') }}</span>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span class="material-symbols-outlined text-gray-600">chevron_right</span>
-                </div>
+                class="hidden sm:block w-32 bg-center bg-no-repeat bg-cover rounded-lg flex-1 bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/10 flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary text-4xl">qr_code_2</span>
             </div>
-            {% endfor %}
-            {% else %}
-            <div class="flex flex-col items-center justify-center py-10 px-4 text-center">
-                <div class="size-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-                    <span class="material-symbols-outlined text-gray-500 text-3xl">group_off</span>
-                </div>
-                <p class="text-gray-500">No students yet. Share the invite code!</p>
-            </div>
-            {% endif %}
         </div>
     </div>
+
+    <!-- Stats -->
+    <div class="flex flex-wrap gap-4 px-4 pb-4">
+        <div
+            class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-white dark:bg-transparent border border-gray-200 dark:border-[#3b4754] shadow-sm">
+            <p class="text-gray-500 dark:text-gray-300 text-sm font-medium leading-normal">Total Students</p>
+            <p class="text-gray-900 dark:text-white tracking-light text-3xl font-bold leading-tight">{{
+                class_obj.members.count() }}</p>
+        </div>
+    </div>
+
+    <!-- Student Roster -->
+    <div class="flex items-center justify-between px-4 pt-4">
+        <h2 class="text-gray-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">Student Roster
+        </h2>
+    </div>
+    <div class="px-4 py-4 space-y-2">
+        {% for member in class_obj.members %}
+        <div
+            class="flex items-center gap-3 bg-white dark:bg-[#1b2127] p-3 rounded-xl border border-gray-100 dark:border-gray-800">
+            <div
+                class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold border border-primary/20">
+                {{ member.student.username[:2].upper() }}
+            </div>
+            <div class="flex flex-col">
+                <span class="text-gray-900 dark:text-white font-bold text-sm">{{ member.student.username }}</span>
+                <span class="text-gray-500 dark:text-gray-400 text-xs">{{ member.student.email }}</span>
+            </div>
+        </div>
+        {% else %}
+        <p class="text-gray-500 text-sm italic">No students joined yet.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Class Decks Section -->
+    <div class="flex items-center justify-between px-4 pt-4 border-t border-gray-200 dark:border-gray-800">
+        <h2 class="text-gray-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">Class Decks
+        </h2>
+        {% if is_teacher %}
+        <a href="{{ url_for('decks.create', visibility='class', class_id=class_obj.id) }}"
+            class="text-primary text-sm font-bold flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">add</span>
+            Add Deck
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="px-4 py-4 space-y-3">
+        {% for deck in decks %}
+        <div
+            class="flex items-center p-3 rounded-xl bg-white dark:bg-[#1b2127] border border-gray-100 dark:border-gray-800">
+            <div class="size-12 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500">
+                <span class="material-symbols-outlined">school</span>
+            </div>
+            <div class="ml-3 flex-1">
+                <p class="text-sm font-bold text-black dark:text-white">{{ deck.title }}</p>
+                <p class="text-xs text-gray-500">{{ deck.cards.count() }} cards</p>
+            </div>
+
+            {% if is_teacher %}
+            <!-- Inactive/Delete Button -->
+            <!-- For now simpler implementation: just visual or functional delete if we had route -->
+            <button class="text-red-500 hover:bg-red-50 p-2 rounded-full">
+                <span class="material-symbols-outlined">delete</span>
+            </button>
+            {% endif %}
+        </div>
+        {% else %}
+        <p class="text-gray-500 text-center text-sm py-4">No decks in this class yet.</p>
+        {% endfor %}
+    </div>
+
 </div>
 {% endblock %}

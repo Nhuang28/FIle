@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}{{ class_obj.name }} - LearnLoop{% endblock %}
+
+{% block content %}
+<div class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+    <!-- Top App Bar -->
+    <div
+        class="sticky top-0 z-50 bg-background-light dark:bg-background-dark border-b border-slate-200 dark:border-slate-800">
+        <div class="flex items-center p-4 justify-between max-w-md mx-auto">
+            <a href="{{ url_for('main.dashboard') }}"
+                class="flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+                <span class="material-symbols-outlined text-2xl">arrow_back_ios_new</span>
+            </a>
+            <h2 class="text-lg font-bold leading-tight tracking-tight flex-1 text-center pr-10">Class Details</h2>
+        </div>
+    </div>
+
+    <main class="max-w-md mx-auto pb-24 px-4 pt-4">
+        <!-- Class Header -->
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold leading-tight mb-1">{{ class_obj.name }}</h1>
+            <div class="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+                <span class="material-symbols-outlined text-lg">school</span>
+                <span class="text-sm font-medium">Teacher: {{ class_obj.teacher.username }}</span>
+            </div>
+        </div>
+
+        <!-- Decks List -->
+        <div class="space-y-4">
+            <h3 class="text-lg font-bold">Class Decks</h3>
+
+            {% for deck in decks %}
+            <div
+                class="bg-white dark:bg-[#1a2431] rounded-2xl p-4 shadow-sm border border-slate-100 dark:border-slate-800 transition-all hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <h4 class="text-base font-bold text-slate-900 dark:text-white mb-1">{{ deck.title }}</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">{{ deck.cards.count() }} cards</p>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs font-semibold">
+                        <span class="text-primary">{{ deck_progress.get(deck.id, 0) }}% Complete</span>
+                    </div>
+                    <div class="h-2 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                        <div class="h-full bg-primary rounded-full transition-all duration-500"
+                            style="width: {{ deck_progress.get(deck.id, 0) }}%"></div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/50 flex justify-end">
+                    <a href="#"
+                        class="flex items-center gap-1.5 text-sm font-bold text-primary hover:text-blue-600 transition-colors">
+                        <span>Study Deck</span>
+                        <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+            {% else %}
+            <div
+                class="text-center py-10 bg-white dark:bg-[#1a2431] rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
+                <p class="text-slate-500 dark:text-slate-400">No decks available in this class yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</div>
+{% endblock %}
