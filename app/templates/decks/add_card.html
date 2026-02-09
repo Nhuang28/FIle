@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Add Cards - {{ deck.title }}{% endblock %}
+
+{% block styles %}
+<style>
+    body {
+        background-color: #E8E9E8 !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="sticky top-0 z-50 bg-[#E8E9E8]">
+    <div class="flex items-center p-4 pb-2 justify-between max-w-md mx-auto">
+        <a href="{{ url_for('decks.view', deck_id=deck.id) }}"
+            class="text-black flex size-12 shrink-0 items-center justify-start cursor-pointer hover:bg-black/5 rounded-full transition-colors">
+            <span class="material-symbols-outlined">arrow_back</span>
+        </a>
+        <h2 class="text-xl font-bold leading-tight tracking-tight flex-1 text-center text-black truncate px-2">Add Card
+        </h2>
+        <div class="w-12"></div>
+    </div>
+</div>
+
+<main class="max-w-md mx-auto pb-24 bg-[#E8E9E8] min-h-screen px-4">
+
+    <div class="bg-white rounded-xl shadow-sm border border-black p-6 mt-4">
+        <div class="mb-6 flex items-center justify-center gap-2 text-black">
+            {% if deck.question_type == 'flashcard' %}
+            <span class="material-symbols-outlined">style</span>
+            <span class="text-sm font-bold uppercase tracking-wider">Flashcard Mode</span>
+            {% elif deck.question_type == 'fill_gap' %}
+            <span class="material-symbols-outlined">edit_note</span>
+            <span class="text-sm font-bold uppercase tracking-wider">Fill-in-Gap Mode</span>
+            {% elif deck.question_type == 'mcq' %}
+            <span class="material-symbols-outlined">check_circle</span>
+            <span class="text-sm font-bold uppercase tracking-wider">MCQ Mode</span>
+            {% endif %}
+        </div>
+
+        <form method="POST" action="{{ url_for('decks.add', deck_id=deck.id) }}" class="space-y-6">
+
+            <!-- Flashcard Form -->
+            {% if deck.question_type == 'flashcard' %}
+            <div class="space-y-4">
+                <div class="space-y-2">
+                    <label class="block text-sm font-bold text-black">Front Side</label>
+                    <textarea name="front" required
+                        class="w-full p-4 rounded-xl border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black text-black placeholder-gray-400 min-h-[100px]"></textarea>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-bold text-black">Back Side</label>
+                    <textarea name="back" required
+                        class="w-full p-4 rounded-xl border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black text-black placeholder-gray-400 min-h-[100px]"></textarea>
+                </div>
+            </div>
+
+            <!-- Fill-in-Gap Form -->
+            {% elif deck.question_type == 'fill_gap' %}
+            <div class="space-y-4">
+                <div class="space-y-2">
+                    <label class="block text-sm font-bold text-black">Sentence</label>
+                    <textarea name="sentence" required
+                        class="w-full p-4 rounded-xl border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black text-black placeholder-gray-400 min-h-[100px]"
+                        placeholder="e.g. The capital of France is Paris."></textarea>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-bold text-black">Missing Word</label>
+                    <input type="text" name="missing_word" required
+                        class="w-full p-4 rounded-xl border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black text-black placeholder-gray-400"
+                        placeholder="e.g. Paris">
+                    <p class="text-xs text-gray-500">This word will be hidden when studying.</p>
+                </div>
+            </div>
+
+            <!-- MCQ Form -->
+            {% elif deck.question_type == 'mcq' %}
+            <div class="space-y-4">
+                <div class="space-y-2">
+                    <label class="block text-sm font-bold text-black">Question</label>
+                    <textarea name="question" required
+                        class="w-full p-4 rounded-xl border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black text-black placeholder-gray-400 min-h-[80px]"></textarea>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-sm font-bold text-black">Options (Select correct one)</label>
+
+                    {% for i in range(1, 5) %}
+                    <div class="flex items-center gap-3">
+                        <input type="radio" name="correct_index" value="{{ i-1 }}" required {% if i==1 %}checked{% endif
+                            %} class="hidden peer">
+                        <label for="correct_index_{{i}}"
+                            onclick="document.querySelector('input[name=correct_index][value=\'{{ i-1 }}\']').checked = true;"
+                            class="size-6 rounded-full border-2 border-gray-300 peer-checked:border-black peer-checked:bg-black cursor-pointer flex items-center justify-center shrink-0 transition-colors">
+                            <div class="size-2 rounded-full bg-white hidden peer-checked:block"></div>
+                        </label>
+                        <input type="text" name="option_{{ i }}" required placeholder="Option {{ i }}"
+                            class="flex-1 p-3 rounded-xl border border-black focus:border-black focus:outline-none text-black bg-white">
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-sm font-bold text-black">Explanation (Optional)</label>
+                    <textarea name="explanation"
+                        class="w-full p-4 rounded-xl border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black text-black placeholder-gray-400 min-h-[80px]"
+                        placeholder="Explain why the answer is correct..."></textarea>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="pt-4">
+                <button type="submit"
+                    class="w-full py-4 rounded-xl bg-black text-white font-bold text-lg shadow-lg hover:bg-gray-900 transition-transform active:scale-[0.98]">
+                    Save Card
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</main>
+{% endblock %}

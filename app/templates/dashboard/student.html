@@ -102,8 +102,8 @@
         </div>
         <div class="space-y-3">
             {% for deck in decks %}
-            <div
-                class="flex items-center p-3 rounded-xl bg-black border border-black hover:bg-gray-900 transition-colors">
+            <a href="{{ url_for('decks.view', deck_id=deck.id) }}"
+                class="flex items-center p-3 rounded-xl bg-black border border-black hover:bg-gray-900 transition-colors cursor-pointer">
                 <div class="size-12 rounded-lg bg-gray-800 flex items-center justify-center text-white">
                     <span class="material-symbols-outlined">language</span>
                 </div>
@@ -112,7 +112,7 @@
                     <p class="text-xs text-gray-400">{{ deck.cards.count() }} cards total</p>
                 </div>
                 <span class="material-symbols-outlined text-gray-600">chevron_right</span>
-            </div>
+            </a>
             {% else %}
             <p class="text-sm text-gray-500 text-center py-4">No decks found. Create one to get started!</p>
             {% endfor %}

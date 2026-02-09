@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}{{ deck.title }} - LearnLoop{% endblock %}
+
+{% block styles %}
+<style>
+    body {
+        background-color: #E8E9E8 !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="sticky top-0 z-50 bg-[#E8E9E8]">
+    <div class="flex items-center p-4 pb-2 justify-between max-w-md mx-auto">
+        <a href="{{ url_for('decks.list') }}"
+            class="text-black flex size-12 shrink-0 items-center justify-start cursor-pointer">
+            <span class="material-symbols-outlined">arrow_back</span>
+        </a>
+        <h2 class="text-xl font-bold leading-tight tracking-tight flex-1 text-center text-black truncate px-2">{{
+            deck.title }}</h2>
+        {% if current_user.id == deck.owner_id %}
+        <form action="{{ url_for('decks.delete', deck_id=deck.id) }}" method="POST"
+            onsubmit="return confirm('Delete this deck?');" class="flex size-12 shrink-0 items-center justify-end">
+            <button type="submit"
+                class="flex size-10 items-center justify-center bg-black text-red-500 rounded-lg hover:bg-gray-900 transition-colors">
+                <span class="material-symbols-outlined text-sm">delete</span>
+            </button>
+        </form>
+        {% else %}
+        <div class="size-12 shrink-0"></div>
+        {% endif %}
+    </div>
+</div>
+
+<main class="max-w-md mx-auto pb-24 bg-[#E8E9E8] min-h-screen px-4">
+
+    <!-- Deck Info -->
+    <div class="mt-4 mb-6">
+        <div class="flex flex-col items-center justify-center text-center space-y-2">
+            <div class="size-20 bg-black rounded-2xl flex items-center justify-center mb-2 shadow-lg">
+                {% if deck.visibility == 'private' %}
+                <span class="material-symbols-outlined text-white text-4xl">lock</span>
+                {% else %}
+                <span class="material-symbols-outlined text-white text-4xl">school</span>
+                {% endif %}
+            </div>
+            <h1 class="text-2xl font-bold text-black">{{ deck.title }}</h1>
+            <p class="text-gray-500 text-sm">
+                {{ deck.cards.count() }} cards •
+                {% if deck.visibility == 'private' %}Private Deck{% else %}Class Deck{% endif %}
+            </p>
+            {% if deck.description %}
+            <p class="text-gray-600 text-base mt-2 max-w-xs">{{ deck.description }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-6 flex flex-col gap-3">
+            <!-- Study Now - Primary Action (Hidden for Teacher/Owner) -->
+            {% if current_user.id != deck.owner_id %}
+            <a href="{{ url_for('study.session', deck_id=deck.id) }}"
+                class="w-full bg-black text-white py-4 px-6 rounded-xl font-bold text-center shadow-lg hover:bg-gray-900 transition-transform active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer text-lg border border-black">
+                <span class="material-symbols-outlined filled">play_circle</span>
+                Study Now
+            </a>
+            {% endif %}
+
+            <div class="flex gap-3">
+                <!-- AI Quiz Gen - Only for MCQ -->
+                {% if deck.question_type == 'mcq' and current_user.id == deck.owner_id %}
+                <a href="{{ url_for('decks.ai_generate', deck_id=deck.id) }}"
+                    class="flex-1 bg-white border border-black text-black py-3.5 px-4 rounded-xl font-bold text-center hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                    <span class="material-symbols-outlined">auto_awesome</span>
+                    AI Quiz Gen
+                </a>
+                {% endif %}
+
+                {% if current_user.id == deck.owner_id %}
+                <!-- Add Card -->
+                <a href="{{ url_for('decks.add', deck_id=deck.id) }}"
+                    class="flex-1 bg-white border border-black text-black py-3.5 px-4 rounded-xl font-bold text-center hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                    <span class="material-symbols-outlined">add</span>
+                    Add Card
+                </a>
+
+                <!-- Rename/Edit -->
+                <button onclick="document.getElementById('rename-modal').classList.remove('hidden')"
+                    class="size-14 shrink-0 bg-white border border-black text-black rounded-xl flex items-center justify-center hover:bg-gray-50 transition-colors">
+                    <span class="material-symbols-outlined">edit</span>
+                </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Modal -->
+    <div id="rename-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onclick="document.getElementById('rename-modal').classList.add('hidden')"></div>
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl">
+            <h3 class="text-xl font-bold text-black mb-4">Rename Deck</h3>
+            <form action="{{ url_for('decks.edit', deck_id=deck.id) }}" method="POST">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-500 mb-1">New Title</label>
+                        <input type="text" name="title" value="{{ deck.title }}" required
+                            class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-black focus:outline-none transition-colors font-bold text-black bg-white">
+                    </div>
+                    <div class="flex gap-3">
+                        <button type="button" onclick="document.getElementById('rename-modal').classList.add('hidden')"
+                            class="flex-1 py-3 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200">Cancel</button>
+                        <button type="submit"
+                            class="flex-1 py-3 rounded-xl bg-black text-white font-bold hover:bg-gray-900">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Cards List -->
+    <div class="mt-8">
+        <h3 class="text-lg font-bold leading-tight mb-3 text-black">Cards in this deck</h3>
+        <div class="space-y-3">
+            {% if deck.cards.count() == 0 %}
+            <div
+                class="flex flex-col items-center justify-center p-8 bg-white/50 rounded-xl border border-gray-200 border-dashed">
+                <p class="text-gray-500 font-medium">This deck is empty.</p>
+                {% if current_user.id == deck.owner_id %}
+                <a href="{{ url_for('decks.add', deck_id=deck.id) }}"
+                    class="mt-3 text-primary font-bold text-sm cursor-pointer hover:underline">Add your first card</a>
+                {% endif %}
+            </div>
+            {% else %}
+            {% for card in deck.cards %}
+            <div class="p-4 rounded-xl bg-white border border-gray-200 shadow-sm group">
+                <div class="flex items-start justify-between gap-3">
+                    <div class="flex-1">
+                        {% if card.card_type == 'flashcard' %}
+                        <p class="text-xs font-bold text-primary mb-1 uppercase tracking-wider">Flashcard</p>
+                        <p class="text-black font-medium">{{ card.flashcard.front_text }}</p>
+                        <p class="text-gray-500 text-sm mt-1">{{ card.flashcard.back_text }}</p>
+                        {% elif card.card_type == 'fill_gap' %}
+                        <p class="text-xs font-bold text-purple-600 mb-1 uppercase tracking-wider">Fill in gap</p>
+                        <p class="text-black font-medium">{{ card.fill_gap.question_text }}</p>
+                        {% elif card.card_type == 'mcq' %}
+                        <p class="text-xs font-bold text-orange-600 mb-1 uppercase tracking-wider">Multiple Choice</p>
+                        <p class="text-black font-medium">{{ card.mcq.question_text }}</p>
+                        {% endif %}
+                    </div>
+                    {% if current_user.id == deck.owner_id %}
+                    <div class="flex flex-col gap-2">
+                        <a href="{{ url_for('cards.edit', card_id=card.id) }}"
+                            class="size-8 flex items-center justify-center bg-gray-100 text-black rounded-lg hover:bg-gray-200 transition-colors cursor-pointer"
+                            title="Edit Card">
+                            <span class="material-symbols-outlined text-sm">edit</span>
+                        </a>
+                        <form action="{{ url_for('cards.delete', card_id=card.id) }}" method="POST"
+                            onsubmit="return confirm('Delete this card?');">
+                            <button type="submit"
+                                class="size-8 flex items-center justify-center bg-black text-red-500 rounded-lg hover:bg-gray-900 transition-colors"
+                                title="Delete Card">
+                                <span class="material-symbols-outlined text-sm">delete</span>
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+</main>
+{% endblock %}

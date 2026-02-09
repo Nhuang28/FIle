@@ -29,8 +29,8 @@
         <h3 class="text-lg font-bold leading-tight mb-3 text-black">Private Decks</h3>
         <div class="space-y-3">
             {% for deck in private_decks %}
-            <div
-                class="flex items-center p-3 rounded-xl bg-black border border-black hover:bg-gray-900 transition-colors">
+            <a href="{{ url_for('decks.view', deck_id=deck.id) }}"
+                class="flex items-center p-3 rounded-xl bg-black border border-black hover:bg-gray-900 transition-colors cursor-pointer">
                 <div class="size-12 rounded-lg bg-gray-800 flex items-center justify-center text-white">
                     <span class="material-symbols-outlined">lock</span>
                 </div>
@@ -39,7 +39,7 @@
                     <p class="text-xs text-gray-400">{{ deck.cards.count() }} cards</p>
                 </div>
                 <span class="material-symbols-outlined text-gray-600">chevron_right</span>
-            </div>
+            </a>
             {% else %}
             <div
                 class="flex flex-col items-center justify-center p-6 bg-black/5 rounded-xl border border-black/5 border-dashed">
@@ -55,8 +55,8 @@
         <h3 class="text-lg font-bold leading-tight mb-3 text-black">Class Decks</h3>
         <div class="space-y-3">
             {% for deck in class_decks %}
-            <div
-                class="flex items-center p-3 rounded-xl bg-white dark:bg-[#1b2127] border border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+            <a href="{{ url_for('decks.view', deck_id=deck.id) }}"
+                class="flex items-center p-3 rounded-xl bg-white dark:bg-[#1b2127] border border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer">
                 <div class="size-12 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500">
                     <span class="material-symbols-outlined">school</span>
                 </div>
@@ -72,7 +72,7 @@
                     </p>
                 </div>
                 <span class="material-symbols-outlined text-gray-400">chevron_right</span>
-            </div>
+            </a>
             {% else %}
             <div
                 class="flex flex-col items-center justify-center p-6 bg-black/5 rounded-xl border border-black/5 border-dashed">

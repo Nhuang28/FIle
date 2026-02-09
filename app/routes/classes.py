@@ -125,3 +125,21 @@ def join():
         return redirect(url_for('classes.view', class_id=class_obj.id))
         
     return render_template('classes/join.html')
+
+@bp.route('/<int:class_id>/delete', methods=['POST'])
+@login_required
+def delete(class_id):
+    class_obj = Class.query.get_or_404(class_id)
+    if class_obj.teacher_id != current_user.id:
+        flash('You do not have permission to delete this class.', 'error')
+        return redirect(url_for('classes.view', class_id=class_obj.id))
+        
+    try:
+        db.session.delete(class_obj)
+        db.session.commit()
+        flash('Class deleted successfully.', 'success')
+        return redirect(url_for('main.dashboard'))
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting class: {str(e)}', 'error')
+        return redirect(url_for('classes.view', class_id=class_obj.id))

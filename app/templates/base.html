@@ -51,11 +51,19 @@
 
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-    <div class="fixed top-4 right-4 z-50 space-y-2">
+    <div class="fixed top-20 left-1/2 -translate-x-1/2 z-[9999] space-y-2 w-full max-w-md px-4 pointer-events-none">
         {% for category, message in messages %}
         <div
-            class="p-4 rounded-xl shadow-lg {% if category == 'error' %}bg-red-500{% else %}bg-primary{% endif %} text-white flex items-center gap-2">
-            <span>{{ message }}</span>
+            class="p-4 rounded-xl shadow-2xl border-2 pointer-events-auto flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-300
+            {% if category == 'error' %}bg-white border-black text-red-600{% else %}bg-black border-black text-white{% endif %}">
+
+            {% if category == 'error' %}
+            <span class="material-symbols-outlined">error</span>
+            {% else %}
+            <span class="material-symbols-outlined">check_circle</span>
+            {% endif %}
+
+            <span class="font-bold">{{ message }}</span>
         </div>
         {% endfor %}
     </div>

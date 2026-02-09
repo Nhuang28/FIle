@@ -18,6 +18,7 @@ dist/
 htmlcov/
 .tox/
 .pytest_cache/
+migrations/
 
 # IDE / editor settings
 .vscode/

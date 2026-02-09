@@ -19,10 +19,12 @@ def create_app(config_class=Config):
     login.init_app(app)
 
     # Register Blueprints
-    from app.routes import auth, main, decks, classes
+    from app.routes import auth, main, decks, classes, study, cards
     app.register_blueprint(auth.bp)
     app.register_blueprint(main.bp)
     app.register_blueprint(decks.bp)
     app.register_blueprint(classes.bp)
+    app.register_blueprint(study.bp)
+    app.register_blueprint(cards.bp)
 
     return app

@@ -1,0 +1,419 @@
+{% extends "base.html" %}
+
+{% block title %}Studying {{ deck.title }}{% endblock %}
+
+{% block styles %}
+<style>
+    body {
+        background-color: #E8E9E8 !important;
+    }
+
+    /* Fixed Container for Flashcard */
+    .flashcard-container {
+        width: 90%;
+        max-width: 500px;
+        aspect-ratio: 3/4;
+        min-height: 300px;
+        position: relative;
+    }
+
+    .flashcard-side {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background-color: black;
+        /* Default Black Card */
+        border-radius: 1.5rem;
+        /* rounded-2xl */
+        padding: 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .flashcard-content {
+        color: white;
+        font-weight: 700;
+        text-align: center;
+        font-size: 1.5rem;
+        /* text-2xl */
+        line-height: normal;
+    }
+
+    /* Back Side Specifics if needed (background is white in previous req, but user asked for consistency "màu trắng trên nền thẻ đen")
+       User said: "đồng bộ UI: Đảm bảo tất cả chữ trong thẻ đều căn giữa (centered), màu trắng trên nền thẻ đen" 
+       So Back side also Black? "mặt còn lại phải xuất hiện ngay lập tức... nền trang tổng thể là #E8E9E8"
+       Let's stick to Black card for both sides as per "chữ trắng trên nền thẻ đen".
+    */
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Top Bar -->
+<div class="fixed top-0 left-0 right-0 z-50 p-4">
+    <div class="flex items-center justify-between max-w-md mx-auto">
+        <a href="{{ url_for('decks.view', deck_id=deck.id) }}"
+            class="size-10 flex items-center justify-center bg-black/10 rounded-full text-black hover:bg-black/20 transition-colors">
+            <span class="material-symbols-outlined">close</span>
+        </a>
+        <div class="flex items-center gap-2">
+            <div class="h-2 w-32 bg-gray-300 rounded-full overflow-hidden">
+                <div id="progress-bar" class="h-full bg-black transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <span id="progress-text" class="text-xs font-bold text-gray-500">0/0</span>
+        </div>
+    </div>
+</div>
+
+<main
+    class="max-w-md mx-auto min-h-screen flex flex-col items-center justify-center p-4 pb-24 relative overflow-hidden">
+
+    <!-- Initial Loading State -->
+    <div id="loading-state" class="text-center">
+        <span class="material-symbols-outlined animate-spin text-4xl text-gray-400">progress_activity</span>
+    </div>
+
+    <!-- Empty Deck State -->
+    <div id="empty-state" class="hidden text-center">
+        <p class="text-xl font-bold text-black mb-2">No cards to study!</p>
+        <a href="{{ url_for('decks.add', deck_id=deck.id) }}" class="text-primary font-bold">Add some cards first</a>
+    </div>
+
+    <!-- Study Card Container -->
+    <div id="card-wrap" class="w-full flex justify-center hidden">
+        <!-- Injected here -->
+    </div>
+
+    <!-- Completion State -->
+    <div id="completion-state" class="hidden text-center w-full">
+        <div class="size-24 rounded-full bg-black text-white flex items-center justify-center mx-auto mb-6 shadow-xl">
+            <span class="material-symbols-outlined text-5xl">check_circle</span>
+        </div>
+        <h2 class="text-3xl font-bold text-black mb-8">Great work!</h2>
+
+        <a href="{{ url_for('main.dashboard') }}"
+            class="block w-full py-4 rounded-xl bg-black text-white font-bold text-lg shadow-lg hover:bg-gray-900 transition-transform active:scale-95">
+            Back to Dashboard
+        </a>
+    </div>
+
+</main>
+
+<!-- Bottom Controls -->
+<div id="controls" class="fixed bottom-0 left-0 right-0 bg-[#E8E9E8] border-t border-black/5 p-4 hidden">
+    <div class="max-w-md mx-auto" id="controls-content">
+        <!-- Injected by JS -->
+    </div>
+</div>
+
+<script>
+    const deckDetails = {
+        id: {{ deck.id }},
+    title: "{{ deck.title }}",
+        question_type: "{{ deck.question_type }}"
+    };
+
+    let cards = [];
+    try {
+        cards = JSON.parse('{{ cards_json|safe }}');
+    } catch (e) {
+        console.error("Failed to parse cards JSON:", e);
+        cards = []; // Fallback to empty
+        // Will be handled by init() check
+    }
+
+    let currentIndex = 0;
+    let score = 0;
+    let isFlipped = false;
+
+    const cardWrap = document.getElementById('card-wrap');
+    const controls = document.getElementById('controls');
+    const controlsContent = document.getElementById('controls-content');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+
+    function init() {
+        console.log("Deck:", deckDetails);
+        console.log("Cards Data:", cards);
+
+        // Hide loading state immediately if empty or error
+        if (!cards || cards.length === 0) {
+            document.getElementById('loading-state').classList.add('hidden');
+
+            // Differentiate between "Empty" and "Error" if needed, 
+            // but for now "No cards" is a safe fallback for users.
+            // Or we can inject a specific error message if the server sent nothing.
+            const emptyState = document.getElementById('empty-state');
+            emptyState.classList.remove('hidden');
+
+            if (cards === null) {
+                emptyState.querySelector('p').innerText = "Error loading cards data.";
+            }
+            return;
+        }
+
+        document.getElementById('loading-state').classList.add('hidden');
+        cardWrap.classList.remove('hidden');
+        controls.classList.remove('hidden');
+        renderCard();
+        updateProgress();
+    }
+
+    function updateProgress() {
+        const progress = ((currentIndex) / cards.length) * 100;
+        progressBar.style.width = `${progress}%`;
+        progressText.innerText = `${currentIndex + 1}/${cards.length}`;
+    }
+
+    function renderCard() {
+        if (currentIndex >= cards.length) {
+            showCompletion();
+            return;
+        }
+
+        const card = cards[currentIndex];
+        console.log("Rendering card:", card);
+
+        cardWrap.innerHTML = '';
+        controlsContent.innerHTML = '';
+        isFlipped = false;
+
+        updateProgress();
+
+        // Use card.type for robust handling of mixed types
+        // (Backend sends 'type': 'flashcard' | 'mcq' | 'fill_gap')
+        if (card.type === 'flashcard') {
+            renderFlashcard(card);
+        } else if (card.type === 'mcq') {
+            renderMCQ(card);
+        } else if (card.type === 'fill_gap') {
+            renderFillGap(card);
+        } else {
+            console.error("Unknown card type:", card.type);
+            cardWrap.innerHTML = `<div class="text-red-500 font-bold">Error: Unknown card type</div>`;
+        }
+    }
+
+    // --- FLASHCARD LOGIC ---
+    function renderFlashcard(card) {
+        // Container
+        const container = document.createElement('div');
+        container.className = 'flashcard-container';
+
+        // Front (Initially Visible)
+        const front = document.createElement('div');
+        front.className = 'flashcard-side';
+        front.id = 'card-front';
+        front.innerHTML = `
+            <p class="flashcard-content">${card.front}</p>
+            <span class="absolute bottom-8 text-white/50 text-xs font-bold uppercase tracking-widest">Tap to flip</span>
+        `;
+        front.onclick = flipCard;
+
+        // Back (Initially Hidden)
+        const back = document.createElement('div');
+        back.className = 'flashcard-side hidden'; // Use hidden class
+        back.id = 'card-back';
+        back.innerHTML = `
+            <p class="flashcard-content" style="color: #4ade80;">${card.back}</p> 
+        `;
+        // Make answer Green? or White? User said "màu trắng trên nền đen". Let's stick to white.
+        back.innerHTML = `
+            <p class="flashcard-content">${card.back}</p> 
+        `;
+
+        container.appendChild(front);
+        container.appendChild(back);
+        cardWrap.appendChild(container);
+
+        // Initial Controls
+        renderFlashcardControls(false);
+    }
+
+    function flipCard() {
+        isFlipped = !isFlipped;
+        const front = document.getElementById('card-front');
+        const back = document.getElementById('card-back');
+
+        if (isFlipped) {
+            front.classList.add('hidden');
+            back.classList.remove('hidden');
+            // Show SM-2 Buttons
+            renderFlashcardControls(true);
+        } else {
+            // Not reachable via tap usually as buttons are outside, but for completeness
+            back.classList.add('hidden');
+            front.classList.remove('hidden');
+            renderFlashcardControls(false);
+        }
+    }
+
+    function renderFlashcardControls(isFlippedState) {
+        if (!isFlippedState) {
+            controlsContent.innerHTML = `
+                <button onclick="flipCard()" class="w-full py-4 rounded-xl bg-black text-white font-bold text-lg shadow-lg">Flip</button>
+            `;
+        } else {
+            // SM-2 Buttons
+            // Again(0), Medium(3), Easy(4), Remember(5)
+            controlsContent.innerHTML = `
+                <div class="grid grid-cols-4 gap-2">
+                    <button onclick="rateCard(0)" class="py-3 rounded-lg bg-red-100 text-red-600 font-bold text-sm">Again</button>
+                    <button onclick="rateCard(3)" class="py-3 rounded-lg bg-orange-100 text-orange-600 font-bold text-sm">Medium</button>
+                    <button onclick="rateCard(4)" class="py-3 rounded-lg bg-blue-100 text-blue-600 font-bold text-sm">Easy</button>
+                    <button onclick="rateCard(5)" class="py-3 rounded-lg bg-emerald-100 text-emerald-600 font-bold text-sm">Remember</button>
+                </div>
+            `;
+        }
+    }
+
+    function rateCard(quality) {
+        const card = cards[currentIndex];
+        // Save progress logic
+        fetch('{{ url_for("study.save_progress") }}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                card_id: card.id,
+                quality: quality
+            })
+        });
+        // Move next
+        currentIndex++;
+        renderCard();
+    }
+
+    // --- MCQ LOGIC ---
+    function renderMCQ(card) {
+        let optionsHtml = '';
+        card.options.forEach((opt, idx) => {
+            optionsHtml += `
+                <button onclick="checkMCQ(${idx})" id="opt-${idx}" class="w-full p-4 rounded-xl bg-white border border-gray-200 text-black font-semibold text-left active:scale-95 transition-all text-sm mb-2">
+                    ${opt}
+                </button>
+            `;
+        });
+
+        cardWrap.innerHTML = `
+            <div class="w-full bg-black rounded-2xl p-6 flex flex-col shadow-xl" style="min-height: 400px; max-width: 500px;">
+                 <div class="flex-1 flex items-center justify-center">
+                    <p class="text-white text-xl font-bold text-center">${card.question}</p>
+                 </div>
+                 <div class="mt-4 space-y-2">
+                    ${optionsHtml}
+                 </div>
+            </div>
+        `;
+
+        controlsContent.innerHTML = `<button class="w-full py-4 rounded-xl bg-gray-300 text-gray-500 font-bold text-lg cursor-not-allowed">Select an answer</button>`;
+    }
+
+    function checkMCQ(selectedIndex) {
+        const card = cards[currentIndex];
+        const isCorrect = selectedIndex === card.correct_index;
+
+        const btn = document.getElementById(`opt-${selectedIndex}`);
+        if (isCorrect) {
+            btn.classList.remove('bg-white', 'text-black');
+            btn.classList.add('bg-emerald-500', 'text-white', 'border-emerald-500');
+            score++;
+        } else {
+            btn.classList.remove('bg-white', 'text-black');
+            btn.classList.add('bg-red-500', 'text-white', 'border-red-500');
+            const correctBtn = document.getElementById(`opt-${card.correct_index}`);
+            correctBtn.classList.add('bg-emerald-500/50', 'text-white', 'border-emerald-500/50');
+        }
+
+        const allBtns = document.querySelectorAll('[id^="opt-"]');
+        allBtns.forEach(b => b.onclick = null);
+
+        controlsContent.innerHTML = `
+            <button onclick="nextCard()" class="w-full py-4 rounded-xl bg-black text-white font-bold text-lg shadow-lg">Next</button>
+        `;
+
+        // Save Result (Accuracy)
+        // We only save at the END for accuracy/points, but user requested 'instant' logic for progress. 
+        // For MCQ/Gap, we stick to StudyResult (points) not CardProgress (SM-2).
+    }
+
+    // --- FILL GAP LOGIC ---
+    function renderFillGap(card) {
+        cardWrap.innerHTML = `
+             <div class="w-full bg-black rounded-2xl p-8 flex flex-col items-center justify-center shadow-xl gap-6" style="min-height: 400px; max-width: 500px;">
+                <p class="text-white text-2xl font-bold text-center leading-relaxed">${card.sentence}</p>
+                <div class="w-full">
+                    <input type="text" id="gap-input" class="w-full bg-transparent border-b-2 border-white/30 text-white text-center text-xl p-2 focus:outline-none focus:border-white placeholder-gray-500" placeholder="Type missing word..." autocomplete="off">
+                </div>
+            </div>
+        `;
+
+        controlsContent.innerHTML = `
+            <button onclick="checkGap()" class="w-full py-4 rounded-xl bg-white text-black font-bold text-lg shadow-lg">Check</button>
+        `;
+    }
+
+    function checkGap() {
+        const input = document.getElementById('gap-input');
+        const userVal = input.value.trim().toLowerCase();
+        const card = cards[currentIndex];
+        const isCorrect = card.answers.some(ans => ans.toLowerCase() === userVal);
+
+        input.disabled = true;
+
+        if (isCorrect) {
+            input.classList.add('text-emerald-500', 'border-emerald-500');
+            score++;
+            controlsContent.innerHTML = `
+                <div class="text-center mb-2 font-bold text-emerald-600">Correct!</div>
+                <button onclick="nextCard()" class="w-full py-4 rounded-xl bg-black text-white font-bold text-lg shadow-lg">Next</button>
+            `;
+        } else {
+            input.classList.add('text-red-500', 'border-red-500');
+            controlsContent.innerHTML = `
+                <div class="text-center mb-2 font-bold text-red-600">Answer: ${card.answers[0]}</div>
+                <button onclick="nextCard()" class="w-full py-4 rounded-xl bg-black text-white font-bold text-lg shadow-lg">Next</button>
+            `;
+        }
+    }
+
+    function nextCard() {
+        currentIndex++;
+        renderCard();
+    }
+
+    function showCompletion() {
+        cardWrap.classList.add('hidden');
+        controls.classList.add('hidden');
+        document.querySelector('.fixed.top-0').classList.add('hidden'); // Hide top bar
+
+        const completionDiv = document.getElementById('completion-state');
+        completionDiv.classList.remove('hidden');
+        completionDiv.classList.add('flex', 'flex-col', 'items-center', 'justify-center', 'min-h-screen');
+
+        // Save Results for Stats (MCQ/Gap only)
+        if (questionType !== 'flashcard') {
+            saveResults(score);
+        }
+        // Flashcard progress is saved per card click
+    }
+
+    function saveResults(finalScore) {
+        fetch('{{ url_for("study.save_result") }}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                deck_id: deckDetails.id,
+                score: finalScore,
+                max_score: cards.length,
+                question_type: deckDetails.question_type
+            })
+        });
+    }
+
+    init();
+</script>
+{% endblock %}
