@@ -77,6 +77,7 @@ def session(deck_id):
                         card_obj['options'] = []
                         
                     card_obj['correct_index'] = int(card.mcq.correct_index) if card.mcq.correct_index is not None else 0
+                    card_obj['explanation'] = str(card.mcq.explanation_text or 'None')
                 else:
                     continue
                 
@@ -85,8 +86,8 @@ def session(deck_id):
             print(f"Error processing card ID {card.id}: {e}")
             continue
         
-    # Serialize using default=str to handle any unexpected types gracefully, though we tried to be strict above
-    return render_template('study/session.html', deck=deck, cards_json=json.dumps(cards_data, default=str))
+    # Pass the list of dicts directly, let Jinja tojson handle it
+    return render_template('study/session.html', deck=deck, cards_data=cards_data)
 
 @bp.route('/save_result', methods=['POST'])
 @login_required

@@ -117,14 +117,8 @@
         question_type: "{{ deck.question_type }}"
     };
 
-    let cards = [];
-    try {
-        cards = JSON.parse('{{ cards_json|safe }}');
-    } catch (e) {
-        console.error("Failed to parse cards JSON:", e);
-        cards = []; // Fallback to empty
-        // Will be handled by init() check
-    }
+    let cards = {{ cards_data| tojson | safe }};
+    if (!cards) cards = [];
 
     let currentIndex = 0;
     let score = 0;
@@ -331,7 +325,13 @@
         const allBtns = document.querySelectorAll('[id^="opt-"]');
         allBtns.forEach(b => b.onclick = null);
 
+        const explanation = card.explanation || "None";
+
         controlsContent.innerHTML = `
+            <div class="mb-4 p-4 bg-gray-100 rounded-xl border border-gray-200 text-left">
+                <p class="text-xs font-bold text-gray-500 uppercase mb-1">Explanation</p>
+                <p class="text-black text-sm">${explanation}</p>
+            </div>
             <button onclick="nextCard()" class="w-full py-4 rounded-xl bg-black text-white font-bold text-lg shadow-lg">Next</button>
         `;
 
@@ -395,7 +395,7 @@
         completionDiv.classList.add('flex', 'flex-col', 'items-center', 'justify-center', 'min-h-screen');
 
         // Save Results for Stats (MCQ/Gap only)
-        if (questionType !== 'flashcard') {
+        if (deckDetails.question_type !== 'flashcard') {
             saveResults(score);
         }
         // Flashcard progress is saved per card click
