@@ -20,8 +20,28 @@
 
 <div class="bg-[#E8E9E8] text-black min-h-screen">
     <main class="max-w-md mx-auto pb-24">
-        <!-- Summary Section (Single Black Container) -->
+        <!-- Filter Section -->
         <section class="px-4 mt-6">
+            <form action="{{ url_for('main.stats') }}" method="GET"
+                class="flex gap-2 items-center justify-between bg-white rounded-lg p-2 shadow-sm">
+                <div class="flex flex-col">
+                    <label for="start_date" class="text-[10px] text-gray-500 font-bold uppercase">From</label>
+                    <input type="month" id="start_date" name="start_date" value="{{ start_date }}"
+                        class="text-xs border-none bg-transparent focus:ring-0 p-0 text-black font-semibold">
+                </div>
+                <span class="text-gray-300">|</span>
+                <div class="flex flex-col">
+                    <label for="end_date" class="text-[10px] text-gray-500 font-bold uppercase">To</label>
+                    <input type="month" id="end_date" name="end_date" value="{{ end_date }}"
+                        class="text-xs border-none bg-transparent focus:ring-0 p-0 text-black font-semibold">
+                </div>
+                <button type="submit"
+                    class="bg-black text-white text-xs px-3 py-2 rounded-md font-bold hover:bg-gray-800 transition">Filter</button>
+            </form>
+        </section>
+
+        <!-- Summary Section (Single Black Container) -->
+        <section class="px-4 mt-4">
             <div class="bg-black w-full rounded-2xl p-6 flex justify-between items-center text-center">
                 <!-- Column 1: Points -->
                 <div class="flex-1 flex flex-col items-center">
@@ -58,6 +78,7 @@
 
                     <!-- SVG Line Chart (Dynamic) -->
                     <div class="relative h-[220px] flex-1 flex items-end justify-between px-2">
+                        {% if monthly_accuracy %}
                         <svg class="w-full h-full overflow-visible" viewBox="0 0 100 100" preserveAspectRatio="none">
                             <!-- Gradient Definition -->
                             <defs>
@@ -71,7 +92,11 @@
                             <!-- Data Y is inverted: 0 is top, 100 is bottom. So value 80% -> y=20 -->
                             {% set points = [] %}
                             {% for acc in monthly_accuracy %}
+                            {% if monthly_accuracy|length > 1 %}
                             {% set x = (loop.index0 / (monthly_accuracy|length - 1)) * 100 %}
+                            {% else %}
+                            {% set x = 50 %} <!-- Center single point -->
+                            {% endif %}
                             {% set y = 100 - acc %}
                             {% set _ = points.append(x ~ ',' ~ y) %}
                             {% endfor %}
@@ -87,29 +112,29 @@
 
                             <!-- Points and Tooltips -->
                             {% for acc in monthly_accuracy %}
+                            {% if monthly_accuracy|length > 1 %}
                             {% set x = (loop.index0 / (monthly_accuracy|length - 1)) * 100 %}
+                            {% else %}
+                            {% set x = 50 %}
+                            {% endif %}
                             {% set y = 100 - acc %}
                             <circle cx="{{ x }}" cy="{{ y }}" r="1.5" fill="#136dec" stroke="white"
                                 stroke-width="1.5" />
                             {% endfor %}
                         </svg>
+                        {% else %}
+                        <div class="w-full h-full flex items-center justify-center text-gray-500 text-xs">No data for
+                            selected range</div>
+                        {% endif %}
                     </div>
                 </div>
 
                 <!-- X-Axis Labels -->
-                <div class="flex justify-between mt-4 px-1 pl-8">
-                    <span class="text-[#92a9c9] text-[10px] font-bold">JAN</span>
-                    <span class="text-[#92a9c9] text-[10px] font-bold">FEB</span>
-                    <span class="text-[#92a9c9] text-[10px] font-bold">MAR</span>
-                    <span class="text-[#92a9c9] text-[10px] font-bold">APR</span>
-                    <span class="text-[#92a9c9] text-[10px] font-bold">MAY</span>
-                    <span class="text-[#92a9c9] text-[10px] font-bold">JUN</span>
-                    <span class="text-[#92a9c9] text-[10px] font-bold">JUL</span>
-                    <span class="text-[#92a9c9] text-[10px] font-bold">AUG</span>
-                    <span class="text-[#92a9c9] text-[10px] font-bold">SEP</span>
-                    <span class="text-[#92a9c9] text-[10px] font-bold">OCT</span>
-                    <span class="text-[#92a9c9] text-[10px] font-bold">NOV</span>
-                    <span class="text-[#92a9c9] text-[10px] font-bold">DEC</span>
+                <div class="flex justify-between mt-4 px-1 pl-0">
+                    {% for label in month_labels %}
+                    <!-- Show specific labels to avoid overcrowding? For now show all, maybe use CSS to hide if too many -->
+                    <span class="text-[#92a9c9] text-[8px] font-bold">{{ label }}</span>
+                    {% endfor %}
                 </div>
             </div>
         </section>

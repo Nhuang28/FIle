@@ -63,6 +63,51 @@ LearnLoop is a web-based flashcard application designed to help students master 
     ```
     Access the app at `http://127.0.0.1:5000`.
 
+## Gemini API Setup & AI Quiz Generation
+
+LearnLoop uses Google's Gemini API to automatically generate multiple-choice questions from source text.
+
+### Setup Instructions
+
+1.  **Get an API Key**:
+    -   Visit [Google AI Studio](https://aistudio.google.com/).
+    -   Create a new project (or select an existing one) and generate an API key.
+
+2.  **Configure Environment**:
+    -   Add the key to your `.env` file:
+        ```bash
+        GEMINI_API_KEY=your_api_key_here
+        ```
+
+### AI Quiz Generation Logic
+
+The AI generation process converts raw educational text into structured database records.
+
+**Location**: `app/routes/decks.py` -> `ai_generate` function.
+
+**Workflow**:
+1.  **Input**: User provides source text, number of questions, and difficulty level.
+2.  **Prompt Engineering**:
+    -   The system constructs a strict prompt instructing Gemini to act as an educational AI.
+    -   It explicitly requests the output effectively as a **JSON list of objects**, enforcing a specific schema:
+        ```json
+        [
+            {
+                "question": "...",
+                "options": ["A", "B", "C", "D"],
+                "answer": "Correct Option",
+                "explanation": "..."
+            }
+        ]
+        ```
+    -   This prevents the model from returning conversational text or markdown formatting that would break the parser.
+3.  **Parsing & Validation**:
+    -   The application receives the raw response and cleans it (removing potential markdown backticks).
+    -   It matches the JSON structure to ensure all required fields (`question`, `options`, `answer`) are present.
+    -   It calculates the `correct_index` by finding the position of the correct answer within the options list.
+4.  **Database Storage**:
+    -   Valid questions are saved to the `cards` table (as `CardMCQ` type) and linked to the active deck.
+
 ## Key Logic & Algorithms
 
 ### Spaced Repetition Algorithm (SM-2)
