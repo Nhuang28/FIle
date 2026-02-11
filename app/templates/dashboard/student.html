@@ -20,7 +20,7 @@
 <main class="max-w-md mx-auto pb-24 bg-[#E8E9E8] min-h-screen">
     <!-- Profile Section (Minimalist - Username Only) -->
     <div class="flex p-4 items-center gap-4">
-        <p class="text-3xl font-bold leading-tight tracking-tight text-black">{{ current_user.username }}</p>
+        <p class="text-3xl font-bold leading-tight tracking-tight text-black">{{ current_user.email.split('@')[0] }}</p>
     </div>
 
     <!-- Hero Card: Due Today (Black Card, White Text) -->
@@ -80,7 +80,7 @@
                 </div>
                 <div class="ml-3 flex-1">
                     <p class="text-sm font-bold text-white">{{ member.enrolled_class.name }}</p>
-                    <p class="text-xs text-gray-400">{{ member.enrolled_class.teacher.username }}</p>
+                    <p class="text-xs text-gray-400">{{ member.enrolled_class.teacher.email }}</p>
                 </div>
                 <span class="material-symbols-outlined text-gray-600">chevron_right</span>
             </a>

@@ -11,7 +11,7 @@ def seed(email):
         teacher = User.query.filter_by(email=teacher_email).first()
         if not teacher:
             print(f"Creating teacher {teacher_email}...")
-            teacher = User(username="Mr. Teacher", email=teacher_email, role='teacher')
+            teacher = User(email=teacher_email, role='teacher')
             teacher.set_password('password123')
             db.session.add(teacher)
             db.session.commit()
@@ -24,7 +24,7 @@ def seed(email):
         user = User.query.filter_by(email=email).first()
         if not user:
             print(f"User {email} not found. Creating...")
-            user = User(username=email.split('@')[0], email=email, role='student')
+            user = User(email=email, role='student')
             user.set_password('password123') # Default password if we need to create
             db.session.add(user)
             db.session.commit()

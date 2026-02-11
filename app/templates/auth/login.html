@@ -14,9 +14,6 @@
 
 <main class="flex-1 flex flex-col max-w-md mx-auto w-full pb-10">
     <div class="px-6 pt-12">
-        <h1 class="text-black tracking-tight text-[32px] font-bold leading-tight text-left">Welcome back.</h1>
-        <p class="text-gray-600 text-base font-normal leading-normal pt-2">Continue your learning journey with
-            LearnLoop.</p>
     </div>
 
     <form class="mx-6 mt-8 space-y-6 bg-black p-8 rounded-3xl shadow-xl" method="POST"
@@ -28,7 +25,7 @@
                     class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">mail</span>
                 <input name="email" required
                     class="w-full bg-gray-900 border-gray-800 rounded-xl py-4 pl-12 pr-4 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-white focus:border-transparent outline-none transition-all"
-                    placeholder="name@email.com" type="email" />
+                    placeholder="alex@example.com" type="email" />
             </div>
         </div>
         <div class="space-y-1.5">
@@ -40,10 +37,11 @@
             <div class="relative">
                 <span
                     class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">lock</span>
-                <input name="password" required
+                <input name="password" id="passwordInput" required
                     class="w-full bg-gray-900 border-gray-800 rounded-xl py-4 pl-12 pr-12 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-white focus:border-transparent outline-none transition-all"
                     placeholder="••••••••" type="password" />
-                <button class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white" type="button">
+                <button class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white" type="button"
+                    id="togglePassword">
                     <span class="material-symbols-outlined text-xl">visibility</span>
                 </button>
             </div>
@@ -72,4 +70,23 @@
 </main>
 <div class="fixed top-0 right-0 -z-10 w-64 h-64 bg-gray-900/5 rounded-full blur-3xl"></div>
 <div class="fixed bottom-0 left-0 -z-10 w-80 h-80 bg-gray-900/5 rounded-full blur-3xl"></div>
+
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#passwordInput');
+
+    togglePassword.addEventListener('click', function (e) {
+        // toggle the type attribute
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+
+        // toggle the icon
+        const iconSpan = this.querySelector('span');
+        if (type === 'text') {
+            iconSpan.textContent = 'visibility_off';
+        } else {
+            iconSpan.textContent = 'visibility';
+        }
+    });
+</script>
 {% endblock %}

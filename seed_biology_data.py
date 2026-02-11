@@ -13,7 +13,7 @@ def seed():
         teacher = User.query.filter_by(role='teacher').first()
         if not teacher:
             print("No teacher found. Creating one...")
-            teacher = User(username='BiologyTeacher', email='teacher@bio.com', role='teacher')
+            teacher = User(email='teacher@bio.com', role='teacher')
             teacher.set_password('password123')
             db.session.add(teacher)
             db.session.commit()

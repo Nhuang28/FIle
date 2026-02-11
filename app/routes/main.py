@@ -17,14 +17,10 @@ def index():
 def dashboard():
     if current_user.role == 'teacher':
         classes = Class.query.filter_by(teacher_id=current_user.id).all()
-        # Calculate stats
-        total_students = sum([c.members.count() for c in classes])
-        avg_mastery = 84 # Mock data for now
+        # Stats removed as per simplification request
         
         return render_template('dashboard/teacher.html',
-                               classes=classes,
-                               total_students=total_students,
-                               avg_mastery=avg_mastery)
+                               classes=classes)
     
     # Students
     decks = Deck.query.filter_by(owner_id=current_user.id).all()

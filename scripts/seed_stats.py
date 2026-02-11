@@ -17,7 +17,7 @@ def seed_stats(email):
             print(f"User with email {email} not found.")
             return
 
-        print(f"Seeding stats for user: {user.username} ({user.email})")
+        print(f"Seeding stats for user: {user.email}")
 
         # Get some decks to assign results to
         decks = Deck.query.all()

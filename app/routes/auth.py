@@ -31,20 +31,15 @@ def register():
         return redirect(url_for('auth.login'))
     
     if request.method == 'POST':
-        username = request.form['username']
         email = request.form['email']
         password = request.form['password']
         role = request.form['role']
         
-        if User.query.filter_by(username=username).first():
-            flash('Username already taken', 'error')
-            return redirect(url_for('auth.register'))
-            
         if User.query.filter_by(email=email).first():
             flash('Email already registered', 'error')
             return redirect(url_for('auth.register'))
             
-        user = User(username=username, email=email, role=role)
+        user = User(email=email, role=role)
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
