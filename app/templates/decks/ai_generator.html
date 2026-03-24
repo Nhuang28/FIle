@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}AI Quiz Generator - LearnLoop{% endblock %}
+{% block title %}AI Quiz Generator - Study App{% endblock %}
 
 {% block styles %}
 <style>
@@ -24,11 +24,11 @@
     /* Minimalist Range Slider Styles */
     input[type=range] {
         -webkit-appearance: none;
+        appearance: none;
         width: 100%;
         background: transparent;
     }
 
-    /* Thumb Styles */
     input[type=range]::-webkit-slider-thumb {
         -webkit-appearance: none;
         height: 20px;
@@ -69,8 +69,6 @@
 
     <!-- Centered Layout Container -->
     <div class="max-w-md mx-auto min-h-screen flex flex-col relative bg-[#E8E9E8] border-x border-black/5">
-
-        <!-- Header -->
         <div
             class="sticky top-0 z-20 flex items-center justify-between p-4 bg-[#E8E9E8]/95 backdrop-blur-sm border-b border-black/5">
             <a href="{{ url_for('decks.view', deck_id=deck.id) }}"
@@ -79,12 +77,8 @@
             </a>
             <h1 class="text-lg font-bold text-black flex-1 text-center pr-10">AI Quiz Generator</h1>
         </div>
-
-        <!-- Main Form -->
         <form action="{{ url_for('decks.ai_generate', deck_id=deck.id) }}" method="POST" id="ai-form"
             class="flex-1 px-4 py-6 space-y-6 pb-32">
-
-            <!-- Step 1: Source Content -->
             <div class="bg-white border border-black rounded-lg p-5 shadow-sm">
                 <div class="mb-4">
                     <label class="block text-lg font-bold text-black mb-1">Step 1: Source Content</label>
@@ -102,8 +96,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Step 2: Configuration -->
             <div class="bg-white border border-black rounded-lg p-5 shadow-sm space-y-6">
                 <div class="border-b border-gray-100 pb-2">
                     <h3 class="text-lg font-bold text-black">Step 2: Configuration</h3>
@@ -170,14 +162,11 @@
             </div>
 
         </form>
-
-        <!-- Fixed Bottom Button -->
         <div
             class="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[#E8E9E8] via-[#E8E9E8]/90 to-transparent z-30 pointer-events-none">
             <div class="max-w-md mx-auto pointer-events-auto">
                 <button type="submit" form="ai-form" onclick="validateAndSubmit()"
-                    class="w-full bg-black text-white font-bold text-lg py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-900 active:scale-[0.98] transition-all shadow-lg shadow-black/10">
-                    <span class="material-symbols-outlined text-xl">auto_awesome</span>
+                    class="w-full bg-black text-white font-bold text-lg py-4 rounded-xl shadow-lg shadow-black/10">
                     Generate MCQs
                 </button>
             </div>

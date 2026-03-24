@@ -41,54 +41,42 @@ class Deck(db.Model):
     cards = db.relationship('Card', backref='deck', lazy='dynamic', cascade='all, delete-orphan')
 
 class Card(db.Model):
+    # This table stores all types of cards (flashcards, fill-in-the-gap, multiple choice)
     __tablename__ = 'cards'
+    
+    # Basic card information
     id = db.Column(db.Integer, primary_key=True)
     deck_id = db.Column(db.Integer, db.ForeignKey('decks.id'), nullable=False)
     card_type = db.Column(db.Enum('flashcard', 'fill_gap', 'mcq'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-    # Relationships to subtypes are handled via backrefs in subtype models below
-
-class CardFlashcard(db.Model):
-    __tablename__ = 'card_flashcard'
-    card_id = db.Column(db.Integer, db.ForeignKey('cards.id'), primary_key=True)
+    
+    # Columns for Flashcards
     front_text = db.Column(db.Text, nullable=True)
     back_text = db.Column(db.Text, nullable=True)
     cloze_template = db.Column(db.Text, nullable=True)
+    
+    # Columns for Fill in the Gap and Multiple Choice Questions
+    question_text = db.Column(db.Text, nullable=True)
+    
+    # JSON columns to store lists of answers or options
     answers_json = db.Column(db.JSON, nullable=True)
+    options_json = db.Column(db.JSON, nullable=True)
     
-    card = db.relationship('Card', backref=db.backref('flashcard', uselist=False, cascade='all, delete-orphan'))
-    
-    @property
-    def answers(self):
-        import json
-        return json.loads(self.answers_json) if self.answers_json else []
-
-class CardFillGap(db.Model):
-    __tablename__ = 'card_fill_gap'
-    card_id = db.Column(db.Integer, db.ForeignKey('cards.id'), primary_key=True)
-    question_text = db.Column(db.Text, nullable=False)
-    answers_json = db.Column(db.JSON, nullable=False)
-    
-    card = db.relationship('Card', backref=db.backref('fill_gap', uselist=False, cascade='all, delete-orphan'))
-    
-    @property
-    def answers(self):
-        import json
-        return json.loads(self.answers_json) if self.answers_json else []
-
-class CardMCQ(db.Model):
-    __tablename__ = 'card_mcq'
-    card_id = db.Column(db.Integer, db.ForeignKey('cards.id'), primary_key=True)
-    question_text = db.Column(db.Text, nullable=False)
-    options_json = db.Column(db.JSON, nullable=False)
-    correct_index = db.Column(db.Integer, nullable=False)
+    # Specific columns for Multiple Choice Questions
+    correct_index = db.Column(db.Integer, nullable=True)
     explanation_text = db.Column(db.Text, nullable=True)
     
-    card = db.relationship('Card', backref=db.backref('mcq', uselist=False, cascade='all, delete-orphan'))
-    
+    # Record when the card was created
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    @property
+    def answers(self):
+        # Convert JSON string to Python list
+        import json
+        return json.loads(self.answers_json) if self.answers_json else []
+
     @property
     def options(self):
+        # Convert JSON string to Python list
         import json
         return json.loads(self.options_json) if self.options_json else []
 
@@ -109,7 +97,6 @@ class Class(db.Model):
     invite_code = db.Column(db.String(6), unique=True, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
-    # Relationships
     teacher = db.relationship('User', backref='taught_classes', foreign_keys=[teacher_id])
     members = db.relationship('ClassMember', backref='enrolled_class', lazy='dynamic', cascade='all, delete-orphan')
 
@@ -119,7 +106,6 @@ class ClassMember(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     joined_at = db.Column(db.DateTime, default=datetime.utcnow)
     
-    # Relationship to Student (User)
     student = db.relationship('User', backref='enrolled_classes', foreign_keys=[student_id])
 
 class StudyResult(db.Model):
@@ -129,7 +115,7 @@ class StudyResult(db.Model):
     deck_id = db.Column(db.Integer, db.ForeignKey('decks.id'), nullable=False)
     score = db.Column(db.Integer, default=0)
     max_score = db.Column(db.Integer, default=0)
-    question_type = db.Column(db.String(50), nullable=False) # Store current type string
+    question_type = db.Column(db.String(50), nullable=False)
     completed_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 

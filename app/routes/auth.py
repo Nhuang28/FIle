@@ -8,7 +8,7 @@ bp = Blueprint('auth', __name__)
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('main.dashboard')) # Assuming main.dashboard exists or will exist
+        return redirect(url_for('main.dashboard'))
     
     if request.method == 'POST':
         email = request.form['email']
@@ -20,8 +20,7 @@ def login():
             return redirect(url_for('auth.login'))
             
         login_user(user)
-        # Handle "next" argument if needed
-        return redirect(url_for('auth.login')) # Placeholder: Redirect to dashboard later
+        return redirect(url_for('auth.login'))
         
     return render_template('auth/login.html')
 

@@ -18,7 +18,6 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     login.init_app(app)
 
-    # Register Blueprints
     from app.routes import auth, main, decks, classes, study, cards
     app.register_blueprint(auth.bp)
     app.register_blueprint(main.bp)

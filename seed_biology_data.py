@@ -1,5 +1,5 @@
 from app import create_app, db
-from app.models import User, Class, Deck, Card, CardFlashcard, CardFillGap, CardMCQ
+from app.models import User, Class, Deck, Card
 import json
 
 app = create_app()
@@ -62,46 +62,37 @@ def seed():
         # Card 1: Flashcard
         if not Card.query.filter_by(deck_id=target_deck.id, card_type='flashcard').first():
             print("- Adding Flashcard")
-            card1 = Card(deck_id=target_deck.id, card_type='flashcard')
-            db.session.add(card1)
-            db.session.flush() # Get ID
-            
-            flashcard = CardFlashcard(
-                card_id=card1.id,
+            card1 = Card(
+                deck_id=target_deck.id, 
+                card_type='flashcard',
                 front_text="What is the function of the Mitochondria?",
                 back_text="It produces energy for the cell (Powerhouse)."
             )
-            db.session.add(flashcard)
+            db.session.add(card1)
 
         # Card 2: Fill in the gap
         if not Card.query.filter_by(deck_id=target_deck.id, card_type='fill_gap').first():
             print("- Adding Fill in the Gap")
-            card2 = Card(deck_id=target_deck.id, card_type='fill_gap')
-            db.session.add(card2)
-            db.session.flush()
-            
-            fillgap = CardFillGap(
-                card_id=card2.id,
+            card2 = Card(
+                deck_id=target_deck.id, 
+                card_type='fill_gap',
                 question_text="The _____ stores the cell's DNA.",
-                answers_json=["Nucleus"] # JSON list implicitly handled if using db.JSON, else might need json.dumps
+                answers_json=json.dumps(["Nucleus"])
             )
-            db.session.add(fillgap)
+            db.session.add(card2)
         
         # Card 3: MCQ
         if not Card.query.filter_by(deck_id=target_deck.id, card_type='mcq').first():
             print("- Adding MCQ")
-            card3 = Card(deck_id=target_deck.id, card_type='mcq')
-            db.session.add(card3)
-            db.session.flush()
-            
-            mcq = CardMCQ(
-                card_id=card3.id,
+            card3 = Card(
+                deck_id=target_deck.id, 
+                card_type='mcq',
                 question_text="Which of the following is NOT a type of cell division?",
-                options_json=["Mitosis", "Meiosis", "Photosynthesis", "Binary Fission"],
-                correct_index=2, # Photosynthesis
+                options_json=json.dumps(["Mitosis", "Meiosis", "Photosynthesis", "Binary Fission"]),
+                correct_index=2,
                 explanation_text="Photosynthesis is a process used by plants to make food, not cell division."
             )
-            db.session.add(mcq)
+            db.session.add(card3)
 
         db.session.commit()
         print("Data generation complete!")

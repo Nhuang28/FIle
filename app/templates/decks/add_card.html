@@ -19,7 +19,6 @@
         </a>
         <h2 class="text-xl font-bold leading-tight tracking-tight flex-1 text-center text-black truncate px-2">Add Card
         </h2>
-        <div class="w-12"></div>
     </div>
 </div>
 
@@ -40,8 +39,6 @@
         </div>
 
         <form method="POST" action="{{ url_for('decks.add', deck_id=deck.id) }}" class="space-y-6">
-
-            <!-- Flashcard Form -->
             {% if deck.question_type == 'flashcard' %}
             <div class="space-y-4">
                 <div class="space-y-2">
@@ -55,8 +52,6 @@
                         class="w-full p-4 rounded-xl border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black text-black placeholder-gray-400 min-h-[100px]"></textarea>
                 </div>
             </div>
-
-            <!-- Fill-in-Gap Form -->
             {% elif deck.question_type == 'fill_gap' %}
             <div class="space-y-4">
                 <div class="space-y-2">
@@ -73,8 +68,6 @@
                     <p class="text-xs text-gray-500">This word will be hidden when studying.</p>
                 </div>
             </div>
-
-            <!-- MCQ Form -->
             {% elif deck.question_type == 'mcq' %}
             <div class="space-y-4">
                 <div class="space-y-2">
@@ -111,8 +104,7 @@
             {% endif %}
 
             <div class="pt-4">
-                <button type="submit"
-                    class="w-full py-4 rounded-xl bg-black text-white font-bold text-lg shadow-lg hover:bg-gray-900 transition-transform active:scale-[0.98]">
+                <button type="submit" class="w-full py-4 rounded-xl bg-black text-white font-bold text-lg shadow-lg">
                     Save Card
                 </button>
             </div>

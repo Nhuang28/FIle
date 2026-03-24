@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Create New Deck - LearnLoop</title>
+    <title>Create New Deck - Study App</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap"
         rel="stylesheet" />
@@ -50,7 +50,6 @@
             </a>
             <h2 class="text-black text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Create New
                 Deck</h2>
-            <div class="w-12"></div>
         </div>
 
         <div class="px-4 pt-6">
@@ -68,7 +67,6 @@
             {% endwith %}
 
             <div class="space-y-6">
-                <!-- Deck Title -->
                 <div class="space-y-2">
                     <label class="block text-black text-base font-bold">Deck Title</label>
                     <input name="title" required autoFocus
@@ -76,9 +74,7 @@
                         placeholder="e.g., Biology 101" />
                 </div>
 
-                <!-- Auto-Assignment Logic -->
                 {% if request.args.get('class_id') and request.args.get('visibility') == 'class' %}
-                <!-- HIDDEN INPUTS for Teacher Auto-assign -->
                 <input type="hidden" name="visibility" value="class">
                 <input type="hidden" name="class_id" value="{{ request.args.get('class_id') }}">
 
@@ -91,7 +87,6 @@
                 </div>
 
                 {% else %}
-                <!-- Normal Flow (Dashboard -> Create) -->
                 {% if current_user.role == 'teacher' %}
                 <div class="space-y-3">
                     <p class="text-black text-base font-bold">Visibility</p>
@@ -136,12 +131,9 @@
                 <input type="hidden" name="visibility" value="private">
                 {% endif %}
                 {% endif %}
-
-                <!-- Question Type -->
                 <div class="space-y-3">
                     <p class="text-black text-base font-bold">Question Type</p>
                     <div class="flex flex-col space-y-3">
-                        <!-- Flashcard -->
                         <label class="cursor-pointer group">
                             <input type="radio" name="question_type" value="flashcard" class="peer hidden" checked>
                             <div
@@ -155,8 +147,6 @@
                                 </div>
                             </div>
                         </label>
-
-                        <!-- Fill in gap -->
                         <label class="cursor-pointer group">
                             <input type="radio" name="question_type" value="fill_gap" class="peer hidden">
                             <div
@@ -170,8 +160,6 @@
                                 </div>
                             </div>
                         </label>
-
-                        <!-- MCQ -->
                         <label class="cursor-pointer group">
                             <input type="radio" name="question_type" value="mcq" class="peer hidden">
                             <div
@@ -190,12 +178,9 @@
 
             </div>
         </div>
-
-        <!-- Sticky Bottom Button -->
         <div class="fixed bottom-0 left-0 right-0 p-4 bg-[#E8E9E8] border-t border-black/5">
             <div class="max-w-[430px] mx-auto">
-                <button type="submit"
-                    class="w-full bg-black text-white font-bold py-4 rounded-xl shadow-lg hover:bg-gray-900 transition-transform active:scale-95 text-lg">
+                <button type="submit" class="w-full bg-black text-white font-bold py-4 rounded-xl shadow-lg text-lg">
                     Create Deck
                 </button>
             </div>

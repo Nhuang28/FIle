@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}My Stats - LearnLoop{% endblock %}
+{% block title %}My Stats - Study App{% endblock %}
 
 {% block styles %}
 <style>
@@ -20,7 +20,6 @@
 
 <div class="bg-[#E8E9E8] text-black min-h-screen">
     <main class="max-w-md mx-auto pb-24">
-        <!-- Filter Section -->
         <section class="px-4 mt-6">
             <form action="{{ url_for('main.stats') }}" method="GET"
                 class="flex gap-2 items-center justify-between bg-white rounded-lg p-2 shadow-sm">
@@ -39,34 +38,26 @@
                     class="bg-black text-white text-xs px-3 py-2 rounded-md font-bold hover:bg-gray-800 transition">Filter</button>
             </form>
         </section>
-
-        <!-- Summary Section (Single Black Container) -->
         <section class="px-4 mt-4">
             <div class="bg-black w-full rounded-2xl p-6 flex justify-between items-center text-center">
-                <!-- Column 1: Points -->
                 <div class="flex-1 flex flex-col items-center">
                     <p class="text-gray-400 text-xs font-light mb-1">Points</p>
                     <p class="text-white text-3xl font-bold">{{ total_points }}</p>
                 </div>
-                <!-- Column 2: Attempted Questions -->
                 <div class="flex-1 flex flex-col items-center">
                     <p class="text-gray-400 text-xs font-light mb-1">Attempted questions</p>
                     <p class="text-white text-3xl font-bold">{{ attempted_questions }}</p>
                 </div>
-                <!-- Column 3: Accuracy -->
                 <div class="flex-1 flex flex-col items-center">
                     <p class="text-gray-400 text-xs font-light mb-1">Accuracy</p>
                     <p class="text-white text-3xl font-bold">{{ accuracy }}%</p>
                 </div>
             </div>
         </section>
-
-        <!-- Main Chart Section -->
         <section class="px-4 py-2 mt-4">
             <div class="bg-black rounded-2xl p-6 shadow-sm border border-black">
 
                 <div class="flex">
-                    <!-- Y-Axis Labels -->
                     <div class="flex flex-col justify-between text-[#92a9c9] text-[10px] font-bold mr-2 h-[220px] py-1">
                         <span>100%</span>
                         <span>80%</span>
@@ -76,7 +67,6 @@
                         <span>0%</span>
                     </div>
 
-                    <!-- SVG Line Chart (Dynamic) -->
                     <div class="relative h-[220px] flex-1 flex items-end justify-between px-2">
                         {% if monthly_accuracy %}
                         <svg class="w-full h-full overflow-visible" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -140,8 +130,6 @@
         </section>
     </main>
 </div>
-
-<!-- Bottom Navigation Bar (Minimalist) -->
 <nav class="fixed bottom-0 left-0 right-0 bg-[#E8E9E8] border-t border-black/5 px-6 pb-6 pt-2">
     <div class="max-w-md mx-auto flex justify-between items-center px-4">
         <a class="flex flex-col items-center gap-1 text-gray-500 hover:text-black"

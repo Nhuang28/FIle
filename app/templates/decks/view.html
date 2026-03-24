@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ deck.title }} - LearnLoop{% endblock %}
+{% block title %}{{ deck.title }} - Study App{% endblock %}
 
 {% block styles %}
 <style>
@@ -27,15 +27,12 @@
                 <span class="material-symbols-outlined text-sm">delete</span>
             </button>
         </form>
-        {% else %}
-        <div class="size-12 shrink-0"></div>
         {% endif %}
     </div>
 </div>
 
 <main class="max-w-md mx-auto pb-24 bg-[#E8E9E8] min-h-screen px-4">
 
-    <!-- Deck Info -->
     <div class="mt-4 mb-6">
         <div class="flex flex-col items-center justify-center text-center space-y-2">
             <div class="size-20 bg-black rounded-2xl flex items-center justify-center mb-2 shadow-lg">
@@ -55,19 +52,15 @@
             {% endif %}
         </div>
 
-        <!-- Action Buttons -->
         <div class="mt-6 flex flex-col gap-3">
-            <!-- Study Now - Primary Action (Hidden for Teacher/Owner unless private) -->
             {% if current_user.id != deck.owner_id or deck.visibility == 'private' %}
             <a href="{{ url_for('study.session', deck_id=deck.id) }}"
-                class="w-full bg-black text-white py-4 px-6 rounded-xl font-bold text-center shadow-lg hover:bg-gray-900 transition-transform active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer text-lg border border-black">
-                <span class="material-symbols-outlined filled">play_circle</span>
+                class="w-full bg-black text-white py-4 px-6 rounded-xl font-bold text-center shadow-lg cursor-pointer text-lg">
                 Study Now
             </a>
             {% endif %}
 
             <div class="flex gap-3">
-                <!-- AI Quiz Gen - Only for MCQ -->
                 {% if deck.question_type == 'mcq' and current_user.id == deck.owner_id %}
                 <a href="{{ url_for('decks.ai_generate', deck_id=deck.id) }}"
                     class="flex-1 bg-white border border-black text-black py-3.5 px-4 rounded-xl font-bold text-center hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 cursor-pointer">
@@ -77,14 +70,12 @@
                 {% endif %}
 
                 {% if current_user.id == deck.owner_id %}
-                <!-- Add Card -->
                 <a href="{{ url_for('decks.add', deck_id=deck.id) }}"
                     class="flex-1 bg-white border border-black text-black py-3.5 px-4 rounded-xl font-bold text-center hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 cursor-pointer">
                     <span class="material-symbols-outlined">add</span>
                     Add Card
                 </a>
 
-                <!-- Rename/Edit -->
                 <button onclick="document.getElementById('rename-modal').classList.remove('hidden')"
                     class="size-14 shrink-0 bg-white border border-black text-black rounded-xl flex items-center justify-center hover:bg-gray-50 transition-colors">
                     <span class="material-symbols-outlined">edit</span>
@@ -94,7 +85,6 @@
         </div>
     </div>
 
-    <!-- Rename Modal -->
     <div id="rename-modal" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onclick="document.getElementById('rename-modal').classList.add('hidden')"></div>
@@ -119,7 +109,6 @@
         </div>
     </div>
 
-    <!-- Cards List -->
     <div class="mt-8">
         <h3 class="text-lg font-bold leading-tight mb-3 text-black">Cards in this deck</h3>
         <div class="space-y-3">
@@ -139,14 +128,14 @@
                     <div class="flex-1">
                         {% if card.card_type == 'flashcard' %}
                         <p class="text-xs font-bold text-primary mb-1 uppercase tracking-wider">Flashcard</p>
-                        <p class="text-black font-medium">{{ card.flashcard.front_text }}</p>
-                        <p class="text-gray-500 text-sm mt-1">{{ card.flashcard.back_text }}</p>
+                        <p class="text-black font-medium">{{ card.front_text }}</p>
+                        <p class="text-gray-500 text-sm mt-1">{{ card.back_text }}</p>
                         {% elif card.card_type == 'fill_gap' %}
                         <p class="text-xs font-bold text-purple-600 mb-1 uppercase tracking-wider">Fill in gap</p>
-                        <p class="text-black font-medium">{{ card.fill_gap.question_text }}</p>
+                        <p class="text-black font-medium">{{ card.question_text }}</p>
                         {% elif card.card_type == 'mcq' %}
                         <p class="text-xs font-bold text-orange-600 mb-1 uppercase tracking-wider">Multiple Choice</p>
-                        <p class="text-black font-medium">{{ card.mcq.question_text }}</p>
+                        <p class="text-black font-medium">{{ card.question_text }}</p>
                         {% endif %}
                     </div>
                     {% if current_user.id == deck.owner_id %}

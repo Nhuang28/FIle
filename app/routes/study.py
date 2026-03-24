@@ -12,81 +12,80 @@ bp = Blueprint('study', __name__, url_prefix='/study')
 def session(deck_id):
     deck = Deck.query.get_or_404(deck_id)
     
-    # Permission check (can be refactored into a decorator or helper)
     has_access = False
     if deck.owner_id == current_user.id:
         has_access = True
     elif deck.visibility == 'class' and deck.class_id:
-        if any(m.class_id == deck.class_id for m in current_user.enrolled_classes):
-            has_access = True
+        # Check if the student is in the class this deck belongs to
+        for member in current_user.enrolled_classes:
+            if member.class_id == deck.class_id:
+                has_access = True
+                break
             
     if not has_access:
         return redirect(url_for('decks.list'))
 
-    # Prepare cards data for JS
     cards_data = []
     
-    # Iterate through deck.cards (dynamic relationship)
     cards_list = deck.cards.all()
     
     if not cards_list:
-        # Empty deck
         return render_template('study/session.html', deck=deck, cards_json='[]')
 
     for card in cards_list:
         try:
-            # Base card object (PURE DICTIONARY)
+            # Create a dictionary to hold the card's data for the frontend
             card_obj = {
                 'id': card.id,
-                'type': str(card.card_type) # Ensure string
+                'type': str(card.card_type)
             }
             
+            # Add fields based on the type of card
             if card.card_type == 'flashcard':
-                if card.flashcard:
-                    card_obj['front'] = str(card.flashcard.front_text or '')
-                    card_obj['back'] = str(card.flashcard.back_text or '')
-                else:
-                    continue
+                card_obj['front'] = str(card.front_text or '')
+                card_obj['back'] = str(card.back_text or '')
 
             elif card.card_type == 'fill_gap':
-                if card.fill_gap:
-                    card_obj['sentence'] = str(card.fill_gap.question_text or '')
-                    try:
-                        # Ensure answers is a LIST of STRINGS
-                        raw_answers = json.loads(card.fill_gap.answers_json) if card.fill_gap.answers_json else []
-                        if isinstance(raw_answers, list):
-                             card_obj['answers'] = [str(a) for a in raw_answers]
-                        else:
-                             card_obj['answers'] = []
-                    except (json.JSONDecodeError, TypeError):
-                        card_obj['answers'] = []
-                else:
-                    continue
+                card_obj['sentence'] = str(card.question_text or '')
+                
+                # Get the answers from the database safely
+                try:
+                    # In python, card.answers returns a list if answers_json is valid
+                    raw_answers = card.answers
+                    
+                    # Ensure all answers are converted to strings
+                    string_answers = []
+                    if isinstance(raw_answers, list):
+                        for a in raw_answers:
+                            string_answers.append(str(a))
+                    card_obj['answers'] = string_answers
+                except Exception:
+                    card_obj['answers'] = []
 
             elif card.card_type == 'mcq':
-                if card.mcq:
-                    card_obj['question'] = str(card.mcq.question_text or '')
-                    try:
-                        # Ensure options is a LIST of STRINGS
-                        raw_options = json.loads(card.mcq.options_json) if card.mcq.options_json else []
-                        if isinstance(raw_options, list):
-                            card_obj['options'] = [str(o) for o in raw_options]
-                        else:
-                            card_obj['options'] = []
-                    except (json.JSONDecodeError, TypeError):
-                        card_obj['options'] = []
-                        
-                    card_obj['correct_index'] = int(card.mcq.correct_index) if card.mcq.correct_index is not None else 0
-                    card_obj['explanation'] = str(card.mcq.explanation_text or 'None')
-                else:
-                    continue
+                card_obj['question'] = str(card.question_text or '')
                 
+                # Get options from the database safely
+                try:
+                    raw_options = card.options
+                    
+                    # Convert all options to strings
+                    string_options = []
+                    if isinstance(raw_options, list):
+                        for o in raw_options:
+                            string_options.append(str(o))
+                    card_obj['options'] = string_options
+                except Exception:
+                    card_obj['options'] = []
+                    
+                card_obj['correct_index'] = int(card.correct_index) if card.correct_index is not None else 0
+                card_obj['explanation'] = str(card.explanation_text or 'None')
+                
+            # Add the mapped card object to our final list mapping
             cards_data.append(card_obj)
         except Exception as e:
-            print(f"Error processing card ID {card.id}: {e}")
             continue
         
-    # Pass the list of dicts directly, let Jinja tojson handle it
     return render_template('study/session.html', deck=deck, cards_data=cards_data)
 
 @bp.route('/save_result', methods=['POST'])
@@ -120,7 +119,7 @@ def save_progress():
         return jsonify({'error': 'No data provided'}), 400
         
     card_id = data.get('card_id')
-    quality = data.get('quality') # 0-5
+    quality = data.get('quality')
     
     if card_id is None or quality is None:
          return jsonify({'error': 'Missing card_id or quality'}), 400
@@ -129,14 +128,11 @@ def save_progress():
         from app.models import CardProgress, Card
         from datetime import timedelta, date
         
-        # Get or create progress
         progress = CardProgress.query.get((current_user.id, card_id))
         if not progress:
             progress = CardProgress(user_id=current_user.id, card_id=card_id)
             db.session.add(progress)
             
-        # SM-2 Algorithm
-        # Quality: 0=Again, 3=Medium, 4=Easy, 5=Remember
         
         if quality < 3:
             progress.repetitions = 0
@@ -151,14 +147,11 @@ def save_progress():
             
             progress.repetitions += 1
             
-        # Update EF
-        # EF' = EF + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02))
         new_ef = float(progress.ease_factor) + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02))
         if new_ef < 1.3:
             new_ef = 1.3
         progress.ease_factor = new_ef
         
-        # Update Next Review Date
         progress.next_review_date = date.today() + timedelta(days=progress.interval_days)
         
         db.session.commit()

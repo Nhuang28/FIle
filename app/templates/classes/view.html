@@ -1,10 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}{{ class_obj.name }} - LearnLoop{% endblock %}
+{% block title %}{{ class_obj.name }} - Study App{% endblock %}
 
 {% block content %}
 <div class="relative flex h-auto min-h-screen w-full flex-col max-w-md mx-auto bg-[#E8E9E8] overflow-x-hidden">
-    <!-- Header -->
     <div
         class="flex items-center bg-[#E8E9E8] p-4 pb-2 justify-between sticky top-0 z-10 border-b border-gray-100 dark:border-gray-800">
         <a href="{{ url_for('main.dashboard') }}" class="text-black flex size-12 shrink-0 items-center cursor-pointer">
@@ -21,13 +20,10 @@
                     <span class="material-symbols-outlined text-sm">delete</span>
                 </button>
             </form>
-            {% else %}
-            <div class="size-10"></div>
             {% endif %}
         </div>
     </div>
 
-    <!-- Class Details -->
     <div class="flex flex-col gap-2 p-4">
         <h3 class="text-black tracking-light text-2xl font-bold leading-tight text-left">Class Invite Code</h3>
         <div class="flex items-center justify-center rounded-xl bg-white p-8 shadow-sm border border-gray-200">
@@ -35,16 +31,8 @@
         </div>
     </div>
 
-    <!-- Stats -->
-    <div class="flex flex-wrap gap-4 px-4 pb-4">
-        <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-white border border-gray-200 shadow-sm">
-            <p class="text-gray-500 text-sm font-medium leading-normal">Total Students</p>
-            <p class="text-black tracking-light text-3xl font-bold leading-tight">{{
-                class_obj.members.count() }}</p>
-        </div>
-    </div>
 
-    <!-- Student Roster -->
+
     <div class="flex items-center justify-between px-4 pt-4">
         <h2 class="text-black text-[22px] font-bold leading-tight tracking-[-0.015em]">Students</h2>
     </div>
@@ -65,7 +53,6 @@
         {% endfor %}
     </div>
 
-    <!-- Class Decks Section -->
     <div class="flex items-center justify-between px-4 pt-4 border-t border-gray-200">
         <h2 class="text-black text-[22px] font-bold leading-tight tracking-[-0.015em]">Class Decks
         </h2>

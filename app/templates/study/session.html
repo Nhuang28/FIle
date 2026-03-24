@@ -53,7 +53,6 @@
 {% endblock %}
 
 {% block content %}
-<!-- Top Bar -->
 <div class="fixed top-0 left-0 right-0 z-50 p-4">
     <div class="flex items-center justify-between max-w-md mx-auto">
         <a href="{{ url_for('decks.view', deck_id=deck.id) }}"
@@ -71,24 +70,15 @@
 
 <main
     class="max-w-md mx-auto min-h-screen flex flex-col items-center justify-center p-4 pb-24 relative overflow-hidden">
-
-    <!-- Initial Loading State -->
     <div id="loading-state" class="text-center">
         <span class="material-symbols-outlined animate-spin text-4xl text-gray-400">progress_activity</span>
     </div>
-
-    <!-- Empty Deck State -->
     <div id="empty-state" class="hidden text-center">
         <p class="text-xl font-bold text-black mb-2">No cards to study!</p>
         <a href="{{ url_for('decks.add', deck_id=deck.id) }}" class="text-primary font-bold">Add some cards first</a>
     </div>
-
-    <!-- Study Card Container -->
     <div id="card-wrap" class="w-full flex justify-center hidden">
-        <!-- Injected here -->
     </div>
-
-    <!-- Completion State -->
     <div id="completion-state" class="hidden text-center w-full">
         <div class="size-24 rounded-full bg-black text-white flex items-center justify-center mx-auto mb-6 shadow-xl">
             <span class="material-symbols-outlined text-5xl">check_circle</span>
@@ -102,11 +92,8 @@
     </div>
 
 </main>
-
-<!-- Bottom Controls -->
 <div id="controls" class="fixed bottom-0 left-0 right-0 bg-[#E8E9E8] border-t border-black/5 p-4 hidden">
     <div class="max-w-md mx-auto" id="controls-content">
-        <!-- Injected by JS -->
     </div>
 </div>
 

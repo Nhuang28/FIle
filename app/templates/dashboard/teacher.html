@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Teacher Dashboard - LearnLoop{% endblock %}
+{% block title %}Teacher Dashboard - Study App{% endblock %}
 
 {% block content %}
 <style>
@@ -14,48 +14,53 @@
     </div>
 </div>
 <main class="max-w-md mx-auto pb-32">
-
-
-    <div class="px-4 mt-6 mb-2">
+    <!-- Create New Class Section -->
+    <div class="px-4 mt-6 mb-8">
         <a href="{{ url_for('classes.create') }}"
-            class="flex w-full items-center justify-center gap-2 rounded-xl h-12 bg-black text-white text-base font-bold">
-            <span class="material-symbols-outlined">add_circle</span>
+            class="flex w-full items-center justify-center rounded-xl h-12 bg-black text-white text-base font-bold shadow-md">
             <span>Create New Class</span>
         </a>
     </div>
-    <div class="flex items-center justify-between px-4 mt-6">
-        <h3 class="text-lg font-bold">Active Classes</h3>
-        <span class="text-xs font-medium text-black px-2 py-1 bg-white rounded-full">{{ classes|length }}
-            Classes</span>
-    </div>
-    <div class="mt-2 space-y-1">
-        {% for class in classes %}
-        <a href="{{ url_for('classes.view', class_id=class.id) }}"
-            class="flex items-center gap-4 bg-black text-white px-4 min-h-[80px] py-3 cursor-pointer mx-4 rounded-xl border border-transparent mb-3">
-            <div class="flex items-center gap-4 flex-1">
-                <div class="flex flex-col justify-center">
-                    <p class="font-bold leading-tight">{{ class.name }}</p>
-                    <p class="text-gray-300 text-sm font-normal mt-0.5">
-                        {{ class.members.count() }} Students • Invite: {{ class.invite_code }}
-                    </p>
-                </div>
-            </div>
-            <div class="shrink-0 flex items-center gap-2">
-                <span class="material-symbols-outlined text-slate-400">chevron_right</span>
-            </div>
-        </a>
-        {% else %}
-        <div class="p-4 text-center text-slate-500">
-            No classes found. Create your first class!
-        </div>
-        {% endfor %}
-    </div>
 
+    <!-- Active Classes Section -->
+    <div class="px-4">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-black">Active Classes</h3>
+            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">{{ classes|length }} Classes</span>
+        </div>
+
+        <div class="space-y-3">
+            {% for class in classes %}
+            <a href="{{ url_for('classes.view', class_id=class.id) }}"
+                class="flex items-center gap-4 bg-black text-white p-4 cursor-pointer rounded-xl border border-transparent shadow-sm hover:bg-gray-900 transition-colors">
+                <div class="flex items-center gap-4 flex-1">
+                    <div class="size-12 rounded-lg bg-gray-800 flex items-center justify-center text-white shrink-0">
+                        <span class="material-symbols-outlined">school</span>
+                    </div>
+                    <div class="flex flex-col justify-center">
+                        <p class="font-bold leading-tight">{{ class.name }}</p>
+                        <p class="text-gray-400 text-xs font-medium mt-1">
+                            {{ class.members.count() }} Students • Code: {{ class.invite_code }}
+                        </p>
+                    </div>
+                </div>
+                <div class="shrink-0 flex items-center">
+                    <span class="material-symbols-outlined text-gray-400">chevron_right</span>
+                </div>
+            </a>
+            {% else %}
+            <div
+                class="flex flex-col items-center justify-center p-8 bg-black rounded-xl border border-black text-center">
+                <p class="text-sm font-medium text-gray-400">No classes found.</p>
+                <p class="text-xs text-gray-500 mt-1">Create your first class to get started!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </main>
 
 <nav class="fixed bottom-0 left-0 right-0 bg-[#E8E9E8] border-t border-black/5 pb-8 pt-3 px-6 z-50">
     <div class="max-w-md mx-auto flex justify-between items-center">
-        <!-- Home menu items removed as requested -->
 
         <div class="flex flex-col items-center gap-1 text-black active-tab">
             <span class="material-symbols-outlined">group</span>

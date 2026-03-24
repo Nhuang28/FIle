@@ -37,11 +37,7 @@ def create():
         db.session.add(new_class)
         db.session.commit()
         
-        # Determine previous page or dashboard
-        # For now redirect to dashboard or class view
         flash('Class created successfully!', 'success')
-        # We might want to separate 'success' page from pure redirect, 
-        # but for now let's redirect to dashboard or view
         return redirect(url_for('classes.view', class_id=new_class.id))
         
     return render_template('classes/create.html')
@@ -49,7 +45,6 @@ def create():
 @bp.route('/<int:class_id>')
 @login_required
 def view(class_id):
-    # Check access: Teacher owner or Student member
     class_obj = Class.query.get_or_404(class_id)
     
     is_teacher = (current_user.id == class_obj.teacher_id)
@@ -64,7 +59,6 @@ def view(class_id):
         flash('You do not have access to this class.', 'error')
         return redirect(url_for('main.dashboard'))
         
-    # Get decks for this class
     decks = Deck.query.filter_by(class_id=class_id).all()
 
     if current_user.role == 'student':
@@ -72,11 +66,6 @@ def view(class_id):
         for deck in decks:
             total_cards = deck.cards.count()
             if total_cards > 0:
-                # Count valid progress entries (e.g. reviewed at least once or based on some progress metric)
-                # Here assuming any existence in CardProgress implies "started/learning"
-                # If "complete" means mastered, we should filter by mastery_level.
-                # User request said "thống kê hoàn thành" (completion stats). 
-                # Let's count cards that have progress:
                 learned_count = CardProgress.query.join(Card).filter(
                     Card.deck_id == deck.id,
                     CardProgress.user_id == current_user.id
@@ -105,18 +94,15 @@ def join():
             flash('Please enter an invite code.', 'error')
             return redirect(url_for('classes.join'))
             
-        # Find class
         class_obj = Class.query.filter_by(invite_code=invite_code).first()
         if not class_obj:
             flash('Invalid invite code.', 'error')
             return redirect(url_for('classes.join'))
             
-        # Check if already a member
         if ClassMember.query.filter_by(student_id=current_user.id, class_id=class_obj.id).first():
             flash(f'You are already a member of {class_obj.name}.', 'info')
             return redirect(url_for('classes.view', class_id=class_obj.id))
             
-        # Add to class
         membership = ClassMember(student_id=current_user.id, class_id=class_obj.id)
         db.session.add(membership)
         db.session.commit()
